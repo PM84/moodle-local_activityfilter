@@ -16,12 +16,12 @@
 
 namespace local_activityfilter\activity_searcher;
 
-use local_activityfilter\activity_searcher\contracts\activity_ranking;
-use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
 use context_system;
 use core_ai\aiactions\generate_text;
 use core_ai\manager;
 use Exception;
+use local_activityfilter\activity_searcher\contracts\activity_ranking;
+use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
 
 /**
  * Filter activities
@@ -63,6 +63,27 @@ class ai_searcher implements i_activity_searcher {
         return $ratings;
     }
 
+    public function prepare_prompt(string $userrequest, array $activitydata): generate_text {
+        global $USER;
+        $plugindescription = json_encode($activitydata, JSON_UNESCAPED_UNICODE);
+        $plugindescription = preg_replace('/<[^>]*>/', '', $plugindescription);
+        $plugindescription = str_replace("\/innen", "", $plugindescription);
+        $plugindescription = str_replace("\/", "/", $plugindescription);
+        $plugindescription = str_replace('},{', "\n", $plugindescription);
+
+        $promptmsg = (
+            get_config('local_activityfilter', 'systemprompt') .
+            'Plugin descriptions ' . $plugindescription . "\n" .
+            'User request: ' . $this->compressor->compress($userrequest)
+        );
+
+        return new generate_text(
+            context_system::instance()->id,
+            $USER->id,
+            $promptmsg
+        );
+    }
+
     public function send_request(generate_text $prompts): string {
         $response = (new manager())->process_action($prompts);
         if (!$response->get_success()) {
@@ -70,6 +91,29 @@ class ai_searcher implements i_activity_searcher {
         }
 
         return $response->get_response_data()['generatedcontent'];
+    }
+
+    public function convert_ai_response_to_json(string $text): array|false {
+        $directdecode = json_decode($text, true);
+        if (json_last_error() == JSON_ERROR_NONE) {
+            return $directdecode;
+        }
+
+        $start = strpos($text, "```json");
+        if ($start === false) {
+            return false;
+        }
+        $start += strlen("```json");
+
+        $end = strpos($text, "```", $start);
+        if ($end === false) {
+            return false;
+        }
+
+        $json = trim(substr($text, $start, $end - $start));
+
+        $data = json_decode($json, true);
+        return is_array($data) ? $data : false;
     }
 
     public function convert_json_to_ranking(mixed $json, array $activitydata): array|false {
@@ -100,49 +144,5 @@ class ai_searcher implements i_activity_searcher {
         }
 
         return false;
-    }
-
-    public function convert_ai_response_to_json(string $text): array|false {
-        $directdecode = json_decode($text, true);
-        if (json_last_error() == JSON_ERROR_NONE) {
-            return $directdecode;
-        }
-
-        $start = strpos($text, "```json");
-        if ($start === false) {
-            return false;
-        }
-        $start += strlen("```json");
-
-        $end = strpos($text, "```", $start);
-        if ($end === false) {
-            return false;
-        }
-
-        $json = trim(substr($text, $start, $end - $start));
-
-        $data = json_decode($json, true);
-        return is_array($data) ? $data : false;
-    }
-
-    public function prepare_prompt(string $userrequest, array $activitydata): generate_text {
-        global $USER;
-        $plugindescription = json_encode($activitydata, JSON_UNESCAPED_UNICODE);
-        $plugindescription = preg_replace('/<[^>]*>/', '', $plugindescription);
-        $plugindescription = str_replace("\/innen", "", $plugindescription);
-        $plugindescription = str_replace("\/", "/", $plugindescription);
-        $plugindescription = str_replace('},{', "\n", $plugindescription);
-
-        $promptmsg = (
-            get_config('local_activityfilter', 'systemprompt') .
-            'Plugin descriptions ' . $plugindescription . "\n" .
-            'User request: ' . $this->compressor->compress($userrequest)
-        );
-
-        return new generate_text(
-            context_system::instance()->id,
-            $USER->id,
-            $promptmsg
-        );
     }
 }

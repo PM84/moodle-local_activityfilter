@@ -27,14 +27,14 @@ class activity_summarizer_test extends advanced_testcase {
 
         $pluginmanager = $this->createMock(core_plugin_manager::class);
         $pluginmanager->method('get_plugins_of_type')
-                      ->willReturn([
+            ->willReturn([
                         'myplugin' => [],
                         'subsection' => [],
                       ]);
 
         $activities = $this->createMock(activity_plugins::class);
         $activities->method('get_enabled_activity_names')
-                   ->willReturn(['myplugin' => 'myplugin']);
+            ->willReturn(['myplugin' => 'myplugin']);
 
         $this->activitysummerizer = new activity_summarizer(
             $DB,

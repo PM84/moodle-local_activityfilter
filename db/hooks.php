@@ -22,8 +22,8 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core\hook\di_configuration;
 use core\hook\after_config;
+use core\hook\di_configuration;
 use local_activityfilter\local\hook_callbacks;
 
 defined('MOODLE_INTERNAL') || die();

@@ -1,51 +1,51 @@
 [
   {
-    "pluginname":"assign",
-    "ranking":9,
-    "occurences":132,
-    "hint":"Allows teachers to assign tasks, collect student work (files & text), and provide feedback\/grades.",
-    "reason":"Directly addresses task assignment, submission and grading - a core function for many learning scenarios."
+    "pluginname": "assign",
+    "ranking": 9,
+    "occurences": 132,
+    "hint": "Allows teachers to assign tasks, collect student work (files & text), and provide feedback\/grades.",
+    "reason": "Directly addresses task assignment, submission and grading - a core function for many learning scenarios."
   },
   {
-    "pluginname":"bigbluebuttonbn",
-    "ranking":8,
-    "occurences":23,
-    "hint":"Provides a web conferencing platform for live online classes, virtual office hours, and group collaboration.",
-    "reason":"Supports real-time interaction and collaboration, crucial for many educational activities."
+    "pluginname": "bigbluebuttonbn",
+    "ranking": 8,
+    "occurences": 23,
+    "hint": "Provides a web conferencing platform for live online classes, virtual office hours, and group collaboration.",
+    "reason": "Supports real-time interaction and collaboration, crucial for many educational activities."
   },
   {
-    "pluginname":"chat",
-    "ranking":7,
-    "occurences":64,
-    "hint":"Enables text-based, real-time synchronous discussions among participants.",
-    "reason":"Facilitates communication and discussion, especially useful for remote learning or group projects."
+    "pluginname": "chat",
+    "ranking": 7,
+    "occurences": 64,
+    "hint": "Enables text-based, real-time synchronous discussions among participants.",
+    "reason": "Facilitates communication and discussion, especially useful for remote learning or group projects."
   },
   {
-    "pluginname":"Choice",
-    "ranking":6,
-    "occurences":23,
-    "hint":"Allows teachers to link to external URLs (websites, files) for various purposes.",
-    "reason":"Useful for providing links to resources or activities outside the platform."
+    "pluginname": "Choice",
+    "ranking": 6,
+    "occurences": 23,
+    "hint": "Allows teachers to link to external URLs (websites, files) for various purposes.",
+    "reason": "Useful for providing links to resources or activities outside the platform."
   },
   {
-    "pluginname":"workshop",
-    "ranking":7,
-    "occurences":13,
-    "hint":"Facilitates collection, review, and peer assessment of student work.",
-    "reason":"Supports collaborative learning and feedback processes."
+    "pluginname": "workshop",
+    "ranking": 7,
+    "occurences": 13,
+    "hint": "Facilitates collection, review, and peer assessment of student work.",
+    "reason": "Supports collaborative learning and feedback processes."
   },
   {
-    "pluginname":"book",
-    "ranking":5,
-    "occurences":2,
-    "hint":"Creates multi-page resources with chapters, subchapters, text & media for displaying information.",
-    "reason":"Useful for presenting lengthy content in a structured and organized manner."
+    "pluginname": "book",
+    "ranking": 5,
+    "occurences": 2,
+    "hint": "Creates multi-page resources with chapters, subchapters, text & media for displaying information.",
+    "reason": "Useful for presenting lengthy content in a structured and organized manner."
   },
   {
-    "pluginname":"wiki",
-    "ranking":5,
-    "occurences":3,
-    "hint":"Enables collaborative creation and editing of web pages.",
-    "reason":"Suitable for group notes, shared documents, or collaborative projects."
+    "pluginname": "wiki",
+    "ranking": 5,
+    "occurences": 3,
+    "hint": "Enables collaborative creation and editing of web pages.",
+    "reason": "Suitable for group notes, shared documents, or collaborative projects."
   }
 ]

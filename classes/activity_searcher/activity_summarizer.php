@@ -51,12 +51,6 @@ class activity_summarizer implements i_activity_summarizer {
         return $data;
     }
 
-    public function get_activities(): array {
-        $plugins = $this->pluginmanager->get_plugins_of_type('mod');
-        unset($plugins["subsection"]);
-        return $plugins;
-    }
-
     private function get_activity_usage_amount(string $activityname): int {
         return $this->db->count_records_sql(
         'SELECT COUNT(1)
@@ -66,5 +60,11 @@ class activity_summarizer implements i_activity_summarizer {
              WHERE m.name = :activityname',
             ['activityname' => $activityname]
         );
+    }
+
+    public function get_activities(): array {
+        $plugins = $this->pluginmanager->get_plugins_of_type('mod');
+        unset($plugins["subsection"]);
+        return $plugins;
     }
 }

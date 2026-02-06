@@ -1,7 +1,9 @@
 <article class="card activity-rating-item">
     <div class="card-header" id="activity-rating-heading-{{id}}">
         <h5 class="mb-0">
-            <button class="btn btn-link collapsed open-rating" data-toggle="collapse" data-target="#activity-rating-collapse-{{id}}" aria-expanded="false" aria-controls="activity-rating-collapse-{{id}}">
+            <button class="btn btn-link collapsed open-rating" data-toggle="collapse"
+                    data-target="#activity-rating-collapse-{{id}}" aria-expanded="false"
+                    aria-controls="activity-rating-collapse-{{id}}">
                 <span>
                     {{{activityicon}}}
                     {{pluginname}}
@@ -14,7 +16,8 @@
             </button>
         </h5>
     </div>
-    <div id="activity-rating-collapse-{{id}}" class="collapse" aria-labelledby="activity-rating-heading-{{id}}" data-parent="#activity-rating">
+    <div id="activity-rating-collapse-{{id}}" class="collapse" aria-labelledby="activity-rating-heading-{{id}}"
+         data-parent="#activity-rating">
         <div class="card-body">
             <p><strong>{{#str}}popularitycolumn, local_activityfilter{{/str}}. </strong> {{occurences}}</p>
             <p><strong>{{#str}}reasoncolumn, local_activityfilter{{/str}}.</strong> {{reason}}</p>

@@ -16,10 +16,9 @@
 
 namespace local_activityfilter\output;
 
-use local_activityfilter\activity_searcher\contracts\activity_ranking;
+use core\output\renderer_base;
 use renderable;
 use templatable;
-use core\output\renderer_base;
 
 class activity_rating_list implements renderable, templatable {
     /**

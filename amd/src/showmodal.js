@@ -15,7 +15,7 @@ const WS_PROCESS = 'local_activityfilter_filter_activities';
 
 // WS#2: new external function that accepts that array, runs PHP processing, and
 //       returns rendered HTML of your results partial.
-const WS_RENDER  = 'local_activityfilter_prepare_results';
+const WS_RENDER = 'local_activityfilter_prepare_results';
 
 /**
  *

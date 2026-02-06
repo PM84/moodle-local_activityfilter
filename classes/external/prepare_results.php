@@ -24,6 +24,15 @@ use core_external\external_value;
 use local_activityfilter\output\activity_rating_list;
 
 class prepare_results extends external_api {
+    public static function execute($items): array {
+        global $OUTPUT;
+
+        $params = self::validate_parameters(self::execute_parameters(), ['items' => $items]);
+
+        $ratinglist = new activity_rating_list($params['items']);
+        return ['html' => $OUTPUT->render($ratinglist)];
+    }
+
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'items' => new external_multiple_structure(new external_single_structure([
@@ -34,15 +43,6 @@ class prepare_results extends external_api {
                 'reason'     => new external_value(PARAM_RAW,  'optional', VALUE_OPTIONAL),
             ])),
         ]);
-    }
-
-    public static function execute($items): array {
-        global $OUTPUT;
-
-        $params = self::validate_parameters(self::execute_parameters(), ['items' => $items]);
-
-        $ratinglist = new activity_rating_list($params['items']);
-        return ['html' => $OUTPUT->render($ratinglist)];
     }
 
     public static function execute_returns(): external_single_structure {

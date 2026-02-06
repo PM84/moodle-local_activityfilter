@@ -17,11 +17,10 @@
 namespace local_activityfilter\output;
 
 use core\di;
-use local_activityfilter\activity_searcher\contracts\activity_ranking;
-use moodle_database;
-use templatable;
-use renderable;
 use core\output\renderer_base;
+use moodle_database;
+use renderable;
+use templatable;
 
 class activity_rating_box implements renderable, templatable {
     const PLUGIN_NAME = 'local_activityfilter';
@@ -29,61 +28,6 @@ class activity_rating_box implements renderable, templatable {
     public function __construct(
         private readonly array $activityrating
     ) {
-    }
-
-    private function get_max_activity_usage_amount(): int {
-        $db = di::get(moodle_database::class);
-        return $db->count_records_sql(
-            'SELECT MAX(cnt)
-             FROM (
-                SELECT COUNT(1) as cnt
-                FROM {course_modules} cm
-                LEFT JOIN {modules} m
-                ON m.id = cm.module
-                GROUP BY m.name
-             ) AS x'
-        );
-    }
-
-    private function get_occurance_string() {
-        $maxusage = max($this->get_max_activity_usage_amount(), 1);
-        $frequencyranking = $this->activityrating["occurences"] * 5 / $maxusage;
-        $frequencyranking = floor($frequencyranking);
-
-        switch ($frequencyranking) {
-            case 0:
-                return get_string('occurences:very_rare', self::PLUGIN_NAME);
-            case 1:
-                return get_string('occurences:rare', self::PLUGIN_NAME);
-            case 2:
-                return get_string('occurences:moderately', self::PLUGIN_NAME);
-            case 3:
-                return get_string('occurences:often', self::PLUGIN_NAME);
-            case 4:
-                return get_string('occurences:very_frequent', self::PLUGIN_NAME);
-            default:
-                return get_string('occurences:very_frequent', self::PLUGIN_NAME);
-        }
-    }
-
-    private static function convert_ranking_stars(int $ranking): array {
-        $staricons = [];
-
-        $stars = intdiv($ranking, 2);
-        for ($i = 1; $i <= $stars; $i++) {
-            $staricons[] = 'fa-star';
-        }
-
-        if ($ranking % 2 == 1) {
-            $staricons[] = 'fa-star-half-full';
-            $stars++;
-        }
-
-        for ($i = 1; $i <= (5 - $stars); $i++) {
-            $staricons[] = 'fa-star-o';
-        }
-
-        return $staricons;
     }
 
     public function export_for_template(?renderer_base $output = null): array {
@@ -111,5 +55,60 @@ class activity_rating_box implements renderable, templatable {
             'stars' => self::convert_ranking_stars($rankfix),
             'activityicon' => $OUTPUT->image_icon('monologo', '', $rating['pluginname']),
         ];
+    }
+
+    private function get_occurance_string() {
+        $maxusage = max($this->get_max_activity_usage_amount(), 1);
+        $frequencyranking = $this->activityrating["occurences"] * 5 / $maxusage;
+        $frequencyranking = floor($frequencyranking);
+
+        switch ($frequencyranking) {
+            case 0:
+                return get_string('occurences:very_rare', self::PLUGIN_NAME);
+            case 1:
+                return get_string('occurences:rare', self::PLUGIN_NAME);
+            case 2:
+                return get_string('occurences:moderately', self::PLUGIN_NAME);
+            case 3:
+                return get_string('occurences:often', self::PLUGIN_NAME);
+            case 4:
+                return get_string('occurences:very_frequent', self::PLUGIN_NAME);
+            default:
+                return get_string('occurences:very_frequent', self::PLUGIN_NAME);
+        }
+    }
+
+    private function get_max_activity_usage_amount(): int {
+        $db = di::get(moodle_database::class);
+        return $db->count_records_sql(
+            'SELECT MAX(cnt)
+             FROM (
+                SELECT COUNT(1) as cnt
+                FROM {course_modules} cm
+                LEFT JOIN {modules} m
+                ON m.id = cm.module
+                GROUP BY m.name
+             ) AS x'
+        );
+    }
+
+    private static function convert_ranking_stars(int $ranking): array {
+        $staricons = [];
+
+        $stars = intdiv($ranking, 2);
+        for ($i = 1; $i <= $stars; $i++) {
+            $staricons[] = 'fa-star';
+        }
+
+        if ($ranking % 2 == 1) {
+            $staricons[] = 'fa-star-half-full';
+            $stars++;
+        }
+
+        for ($i = 1; $i <= (5 - $stars); $i++) {
+            $staricons[] = 'fa-star-o';
+        }
+
+        return $staricons;
     }
 }

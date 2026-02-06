@@ -31,16 +31,16 @@ use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_activities extends external_api {
-    public static function execute_parameters(): external_function_parameters {
-        return new external_function_parameters([
-            'prompt' => new external_value(PARAM_TEXT),
-        ]);
-    }
-
     public static function execute(string $prompt): array {
         $params = self::validate_parameters(self::execute_parameters(), ['prompt' => $prompt]);
         $activitysearcher = di::get(i_activity_searcher::class);
         return $activitysearcher->filter_activities($params['prompt']);
+    }
+
+    public static function execute_parameters(): external_function_parameters {
+        return new external_function_parameters([
+            'prompt' => new external_value(PARAM_TEXT),
+        ]);
     }
 
     public static function execute_returns(): external_multiple_structure {

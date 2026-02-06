@@ -12,11 +12,12 @@ gesucht.
 ## Installation
 
 1. Clone das Repository in das `/local/pluginname`-Verzeichnis der Moodle-Installation.
-2. Ruf' **Website-Administration → Systemnachrichten** auf, um die Installation anzustoßen oder führ' `admin/cli/upgrade.php` aus.
+2. Ruf' **Website-Administration → Systemnachrichten** auf, um die Installation anzustoßen oder führ'
+   `admin/cli/upgrade.php` aus.
 
 ### Voraussetzungen
-- Abhängig vom AI-Subsystem (generate_text)
 
+- Abhängig vom AI-Subsystem (generate_text)
 
 ## Konfiguration
 
@@ -24,11 +25,12 @@ Nach Installation kann das Plugin auf folgenden Weg konfiguriert werden:
 **Website-Administration → Plugins → Lokale Plugins → Plugin Name**
 
 Vor Inbetriebnahme des Plugins müssen folgende Einstellungen gesetzt werden:
+
 - AI Subsystem muss aktiviert sein, mit mindestens einer Textgenerierungsoption
 
 Einstellungen:
-- Systemprompt: Mithilfe des Systemprompts können die Ergebnisse der AI passend konfiguriert werden.
 
+- Systemprompt: Mithilfe des Systemprompts können die Ergebnisse der AI passend konfiguriert werden.
 
 ## Nutzung
 
@@ -48,11 +50,10 @@ Einstellungen:
 
 Dieses Plugin stellt folgende Webservice-Funktionen zur Verfügung:
 
-| Webservice-Funktion                                 | Beschreibung                                           |
-|-----------------------------------------------------|--------------------------------------------------------|
-| `local_activityfilter_filter_activities`            | Stellt eine Anfrage an die KI für eine Ratingübersicht |
-| `local_activityfilter_prepare_results`              | Erstellt die Datestellung für die Ratingübersicht      |
-
+| Webservice-Funktion                      | Beschreibung                                           |
+|------------------------------------------|--------------------------------------------------------|
+| `local_activityfilter_filter_activities` | Stellt eine Anfrage an die KI für eine Ratingübersicht |
+| `local_activityfilter_prepare_results`   | Erstellt die Datestellung für die Ratingübersicht      |
 
 ## Installing via uploaded ZIP file ##
 
@@ -89,7 +90,7 @@ version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program.  If not, see <https://www.gnu.org/licenses/>.
+this program. If not, see <https://www.gnu.org/licenses/>.

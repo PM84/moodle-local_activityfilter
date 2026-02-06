@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'moodle/local_activityfilter',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'cf60221dc9a27e0c3d7396a395e447f61a66fe8a',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'moodle/local_activityfilter' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'cf60221dc9a27e0c3d7396a395e447f61a66fe8a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nlp-tools/nlp-tools' => array(
+            'pretty_version' => 'v0.1.3',
+            'version' => '0.1.3.0',
+            'reference' => 'bbccab0f3ca7277bdf7b292ba67ca644efd0cefe',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nlp-tools/nlp-tools',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'voku/stop-words' => array(
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
+            'reference' => 'fc1708f9f7a3f70de1b1b6c04c5f350a3baa71e8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../voku/stop-words',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

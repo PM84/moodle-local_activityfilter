@@ -1,0 +1,15 @@
+<style>
+    .open-rating {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        text-decoration: none;
+        justify-content: space-between;
+    }
+</style>
+
+<section class="accordion" id="activity-rating">
+    {{#activityresponses}}
+        {{> local_activityfilter/activity_rating_box}}
+    {{/activityresponses}}
+</section>

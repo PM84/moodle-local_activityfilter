@@ -1,0 +1,76 @@
+<style>
+    .prompt-search {
+        border-style: none;
+        outline-style: none;
+        resize: none;
+    }
+
+    .prompt-card {
+        border-radius: 20px;
+    }
+
+    .prompt-search-btn {
+        border-radius: 20px;
+        padding: 0 0 0 6px;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
+
+<script>
+    /**
+     * Makes the text area auto resizeable
+     *
+     * @param textarea Text area to make resizeable
+     */
+    function initAutoResize(textarea) {
+        if (!textarea || textarea.dataset.autoresizeInit === "1") {
+            return;
+        }
+
+        textarea.dataset.autoresizeInit = "1";
+
+        function autoResize() {
+            textarea.style.height = "auto";
+            textarea.style.height = textarea.scrollHeight + "px";
+        }
+
+        textarea.addEventListener('input', autoResize);
+    }
+
+    /**
+     * Makes all .prompt-search auto resizeable
+     */
+    function makeAllResizeable() {
+        const textareas = document.querySelectorAll('.prompt-search');
+        textareas.forEach(ta => {
+            initAutoResize(ta);
+        });
+    }
+
+    // Protects the script from being executed multiple times
+    if (!window.__autoResizeObserver) {
+        window.__autoResizeObserver = new MutationObserver(makeAllResizeable);
+        window.__autoResizeObserver.observe(
+                document.body, {
+                    childList: true,
+                    subtree: true
+                }
+        );
+    }
+</script>
+
+<form id="ai_activity_filter_prompt_form">
+    <article class="card prompt-card">
+        <div class="card-body">
+            <textarea class="prompt-search w-100" id="activitysearchprompt" placeholder="{{#str}}promptdesc, local_activityfilter{{/str}}" rows="1"></textarea>
+        </div>
+        <button class="btn btn-primary prompt-search-btn" type="button" data-action="activityfilter-search">
+            <span class="label">{{#pix}}a/search, core, {{#str}}search, local_activityfilter{{/str}}{{/pix}}</span>
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        </button>
+    </article>
+</form>

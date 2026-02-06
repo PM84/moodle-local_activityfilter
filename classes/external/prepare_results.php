@@ -37,10 +37,10 @@ class prepare_results extends external_api {
         return new external_function_parameters([
             'items' => new external_multiple_structure(new external_single_structure([
                 'pluginname' => new external_value(PARAM_TEXT, 'module name (e.g. assign, wiki)'),
-                'ranking'    => new external_value(PARAM_INT,  '1..10'),
-                'occurences' => new external_value(PARAM_INT,  'optional', VALUE_OPTIONAL),
-                'hint'       => new external_value(PARAM_RAW,  'optional', VALUE_OPTIONAL),
-                'reason'     => new external_value(PARAM_RAW,  'optional', VALUE_OPTIONAL),
+                'ranking'    => new external_value(PARAM_INT, '1..10'),
+                'occurences' => new external_value(PARAM_INT, 'optional', VALUE_OPTIONAL),
+                'hint'       => new external_value(PARAM_RAW, 'optional', VALUE_OPTIONAL),
+                'reason'     => new external_value(PARAM_RAW, 'optional', VALUE_OPTIONAL),
             ])),
         ]);
     }

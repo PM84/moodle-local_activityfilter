@@ -53,7 +53,7 @@ class activity_summarizer implements i_activity_summarizer {
 
     private function get_activity_usage_amount(string $activityname): int {
         return $this->db->count_records_sql(
-        'SELECT COUNT(1)
+            'SELECT COUNT(1)
              FROM {course_modules} cm
              LEFT JOIN {modules} m
                 ON m.id = cm.module

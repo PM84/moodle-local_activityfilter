@@ -47,7 +47,7 @@ $settings->add(
         get_string('settings:systemprompt', 'local_activityfilter'),
         get_string('settings:systemprompt_desc', 'local_activityfilter'),
         (
-'You are an assistant that analyses a user query and selects the most relevant activities.
+        'You are an assistant that analyses a user query and selects the most relevant activities.
 
 Task: Evaluate the query and return the best-matching activities.
 

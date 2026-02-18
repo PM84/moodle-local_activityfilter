@@ -18,9 +18,24 @@ use core\di;
 use local_activityfilter\activity_searcher\activity_data;
 use local_activityfilter\activity_searcher\ai_searcher;
 use local_activityfilter\activity_searcher\contracts\activity_ranking;
+use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
 use local_activityfilter\activity_searcher\i_activity_summarizer;
+use local_activityfilter\activity_searcher\i_text_compressor;
 
-class ai_searcher_test extends advanced_testcase {
+/**
+ * Unit test for AI Searcher.
+ *
+ * @covers \local_activityfilter\activity_searcher\ai_searcher
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+final class ai_searcher_test extends advanced_testcase {
+    /**
+     * Data provider for test_convert_ai_response_to_json
+     *
+     * @return array[] Case Name → [Raw AI Data, Converted Data]
+     */
     public function convert_ai_response_to_json_dataprovider(): array {
         return [
             'json inside markdown block' => [
@@ -51,19 +66,28 @@ class ai_searcher_test extends advanced_testcase {
     }
 
     /**
-     * @param $jsontext
-     * @param $expectedjsonobject
+     * Test if cleanup of AI Answers is working properly
+     *
+     * @covers ::convert_ai_response_to_json
+     * @param string $jsontext Raw AI Text
+     * @param array|false $expectedjsonobject Array or false if not convertable
      * @dataProvider convert_ai_response_to_json_dataprovider
      */
     public function test_convert_ai_response_to_json(string $jsontext, array|false $expectedjsonobject): void {
-        $activitysummerizer = di::get(i_activity_summarizer::class);
-        $aisearcher = new ai_searcher($activitysummerizer);
+        $compressor = di::get(i_text_compressor::class);
+        $activitysummerizer = di::get(i_activity_searcher::class);
+        $aisearcher = new ai_searcher($activitysummerizer, $compressor);
 
         $jsonobject = $aisearcher->convert_ai_response_to_json($jsontext);
 
         $this->assertEquals($expectedjsonobject, $jsonobject);
     }
 
+    /**
+     * Data provider for test_convert_json_to_ranking
+     *
+     * @return array[] Case Name → [Json Data, Expected Activity Ranking]
+     */
     public function convert_json_to_ranking_dataprovider(): array {
         return [
             'valid data' => [
@@ -86,16 +110,20 @@ class ai_searcher_test extends advanced_testcase {
     }
 
     /**
+     * Test if plugin get converted correctly from json into an ranking
+     *
+     * @covers ::convert_json_to_ranking
      * @param mixed $jsonobject
      * @param array $expectedrankings
      * @dataProvider convert_json_to_ranking_dataprovider
      */
     public function test_convert_json_to_ranking(mixed $jsonobject, array $expectedrankings): void {
-        $activitysummerizer = di::get(i_activity_summarizer::class);
-        $aisearcher = new ai_searcher($activitysummerizer);
+        $compressor = di::get(i_text_compressor::class);
+        $activitysummerizer = di::get(i_activity_searcher::class);
+        $aisearcher = new ai_searcher($activitysummerizer, $compressor);
         $activitydata = [
-            new activity_data('kekse', 'Hilfe', 3),
-            new activity_data('leber', 'Hilfe2', 6),
+            new activity_data('kekse', 'Hilfe', 3, 0),
+            new activity_data('leber', 'Hilfe2', 6, 0),
         ];
 
         $rankings = $aisearcher->convert_json_to_ranking($jsonobject, $activitydata);

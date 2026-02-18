@@ -18,11 +18,27 @@ use local_activityfilter\activity_searcher\activity_data;
 use local_activityfilter\activity_searcher\activity_plugins;
 use local_activityfilter\activity_searcher\activity_summarizer;
 
-class activity_summarizer_test extends advanced_testcase {
+/**
+ * Unit test for Activity Summarizer.
+ *
+ * @covers \local_activityfilter\activity_searcher\activity_summarizer
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+final class activity_summarizer_test extends advanced_testcase {
+    /** @var activity_summarizer Object to test */
     private activity_summarizer $activitysummerizer;
 
+    /**
+     * Constructor.
+     *
+     * Mocking → core_plugin_manager and activity_plugins
+     *
+     * @return void
+     */
     public function setUp(): void {
-        global $DB;
+        parent::setUp();
         $this->resetAfterTest();
 
         $pluginmanager = $this->createMock(core_plugin_manager::class);
@@ -37,12 +53,19 @@ class activity_summarizer_test extends advanced_testcase {
             ->willReturn(['myplugin' => 'myplugin']);
 
         $this->activitysummerizer = new activity_summarizer(
-            $DB,
+            di::get(moodle_database::class),
             $pluginmanager,
             $activities
         );
     }
 
+    /**
+     * Tests, if get activities will exclude subsection,
+     * but includes other plugins.
+     *
+     * @covers ::get_activities
+     * @return void
+     */
     public function test_get_activities(): void {
         $expected = [
             'myplugin' => [],
@@ -53,11 +76,18 @@ class activity_summarizer_test extends advanced_testcase {
         $this->assertEquals($expected, $activities);
     }
 
+    /**
+     * Tests if the plugin infos are correctly exported
+     *
+     * @covers ::get_activity_data
+     * @return void
+     */
     public function test_get_activity_data(): void {
         $expected = [
             new activity_data(
                 'myplugin',
                 'my ai help',
+                0,
                 0
             ),
         ];

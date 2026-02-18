@@ -16,8 +16,11 @@
 
 namespace local_activityfilter\output;
 
+use coding_exception;
 use core\di;
 use core\output\renderer_base;
+use dml_exception;
+use lang_string;
 use moodle_database;
 use renderable;
 use templatable;
@@ -46,15 +49,21 @@ class activity_rating_box implements renderable, templatable {
         $this->activityrating = $activityrating;
     }
 
+    /**
+     * Converts the data to the view data
+     *
+     * @param renderer_base|null $output
+     * @return array
+     * @throws coding_exception
+     */
     public function export_for_template(?renderer_base $output = null): array {
         global $OUTPUT;
         $rating = $this->activityrating;
+        // Validate AI Ranking.
         $rankfix = (int)$rating['ranking'] ?? 0;
         $rankfix = max(0, min(10, $rankfix));
 
-        $popularityfix = (int)$rating['popularity'] ?? 0;
-        $popularityfix = max(0, min(10, $popularityfix));
-
+        // Search plugin language string.
         $pluginname = get_string('pluginname', "mod_" . $rating['pluginname']);
         if ($pluginname == "[[pluginname]]") {
             $pluginname = $rating['pluginname'];
@@ -73,7 +82,13 @@ class activity_rating_box implements renderable, templatable {
         ];
     }
 
-    private function get_occurance_string() {
+    /**
+     * Converts the occurrence number for output
+     *
+     * @return lang_string Language string, how often this activity occurs in the moodle
+     * @throws coding_exception
+     */
+    private function get_occurance_string(): string {
         $maxusage = max($this->get_max_activity_usage_amount(), 1);
         $frequencyranking = $this->activityrating["occurences"] * 5 / $maxusage;
         $frequencyranking = floor($frequencyranking);
@@ -94,20 +109,28 @@ class activity_rating_box implements renderable, templatable {
         }
     }
 
+    /**
+     * Fetch the usage amount of the given
+     *
+     * @return int Usage count of most used activity
+     * @throws dml_exception
+     */
     private function get_max_activity_usage_amount(): int {
         $db = di::get(moodle_database::class);
-        return $db->count_records_sql(
-            'SELECT MAX(cnt)
-             FROM (
-                SELECT COUNT(1) as cnt
-                FROM {course_modules} cm
-                LEFT JOIN {modules} m
-                ON m.id = cm.module
-                GROUP BY m.name
-             ) AS x'
-        );
+        return $db->get_record_sql(
+            'SELECT COUNT(*) 
+                 FROM {course_modules} cm
+                 JOIN {modules} m ON m.id = cm.module
+                 GROUP BY m.name
+                 ORDER BY COUNT(*) DESC', strictness: IGNORE_MULTIPLE);
     }
 
+    /**
+     * Converts an int from 0 to 10 into a UI-Star rating
+     *
+     * @param int $ranking Rating from 0 to 10
+     * @return array UI Data for star rating
+     */
     private static function convert_ranking_stars(int $ranking): array {
         $staricons = [];
 

@@ -22,12 +22,28 @@ use moodle_database;
 use renderable;
 use templatable;
 
+/**
+ * UI-Component for an activity rating for a use case.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class activity_rating_box implements renderable, templatable {
-    const PLUGIN_NAME = 'local_activityfilter';
+    /** @var string Name of this plugin */
+    private const PLUGIN_NAME = 'local_activityfilter';
+    /** @var array Activity rating data from AI */
+    private readonly array $activityrating;
 
+    /**
+     * Constructor.
+     *
+     * @param array $activityrating Activity rating data from AI
+     */
     public function __construct(
-        private readonly array $activityrating
+        array $activityrating
     ) {
+        $this->activityrating = $activityrating;
     }
 
     public function export_for_template(?renderer_base $output = null): array {

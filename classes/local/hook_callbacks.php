@@ -27,7 +27,20 @@ use local_activityfilter\activity_searcher\i_activity_summarizer;
 use local_activityfilter\activity_searcher\stopword_remover;
 use moodle_database;
 
+/**
+ * Hook Callback definitions.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class hook_callbacks {
+    /**
+     * Dependency injection configuration method
+     *
+     * @param di_configuration $hook DI Instance
+     * @return void
+     */
     public static function di_configuration(di_configuration $hook): void {
         $hook->add_definition(
             id: i_activity_summarizer::class,
@@ -56,6 +69,12 @@ class hook_callbacks {
         );
     }
 
+    /**
+     * Injects JS to add activity filter to course section menu
+     *
+     * @param after_config $hook After config hook
+     * @return void
+     */
     public static function after_config(after_config $hook): void {
         global $PAGE;
         $PAGE->requires->js_call_amd(

@@ -118,11 +118,13 @@ class activity_rating_box implements renderable, templatable {
     private function get_max_activity_usage_amount(): int {
         $db = di::get(moodle_database::class);
         return $db->get_record_sql(
-            'SELECT COUNT(*) 
+            'SELECT COUNT(*)
                  FROM {course_modules} cm
                  JOIN {modules} m ON m.id = cm.module
                  GROUP BY m.name
-                 ORDER BY COUNT(*) DESC', strictness: IGNORE_MULTIPLE);
+                 ORDER BY COUNT(*) DESC',
+            strictness: IGNORE_MULTIPLE
+        );
     }
 
     /**

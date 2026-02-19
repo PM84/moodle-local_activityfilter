@@ -16,7 +16,23 @@
 
 namespace local_activityfilter\local;
 
+use dml_exception;
+
+/**
+ * Helper class for getting plugin descriptions.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class plugin_description {
+    /**
+     * Return local overwritten description or default if not set
+     *
+     * @param string $pluginname Frankenstein plugin name
+     * @return string Plugin description
+     * @throws dml_exception
+     */
     public static function get(string $pluginname): string {
         $usedefault = get_config('local_activityfilter', "ai_hint_{$pluginname}_use_default");
         if ($usedefault) {
@@ -26,6 +42,13 @@ class plugin_description {
         return get_config('local_activityfilter', 'ai_hint_' . $pluginname) ?: '';
     }
 
+    /**
+     * Returns default plugin description or local overwrite
+     *
+     * @param string $pluginname Frankenstein plugin name
+     * @return string Default plugin description
+     * @throws \coding_exception
+     */
     public static function get_default(string $pluginname): string {
         if ($pluginname == 'booking') {
             return 'Mit Buchung können Teilnehmer/innen Termine, Veranstaltungen oder Ressourcen eigenständig reservieren. Trainer/innen legen dafür Zeitfenster oder Optionen fest und behalten den Überblick über alle Buchungen. Diese Aktivität eignet sich beispielsweise für Elternsprechtage oder Projekttermine.';

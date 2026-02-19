@@ -16,19 +16,40 @@
 
 namespace local_activityfilter\output;
 
+use coding_exception;
 use core\output\renderer_base;
 use renderable;
 use templatable;
 
+/**
+ * UI-Component for a list of activity ratings.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class activity_rating_list implements renderable, templatable {
+    /** @var array[] List of activity ratings data arrays */
+    private readonly array $activityratings;
+
     /**
-     * @param array[] $activityratings
+     * Constructor.
+     *
+     * @param array[] $activityratings List of activity ratings data
      */
     public function __construct(
-        private readonly array $activityratings
+        array $activityratings
     ) {
+        $this->activityratings = $activityratings;
     }
 
+    /**
+     * Render by using class activity_rating_box
+     *
+     * @param renderer_base|null $output Base renderer
+     * @return array[] Variables for template (Activity ratings)
+     * @throws coding_exception
+     */
     public function export_for_template(?renderer_base $output = null): array {
         $exported = [];
         $i = 1;

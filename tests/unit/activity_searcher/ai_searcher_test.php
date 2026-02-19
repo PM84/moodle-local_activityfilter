@@ -36,7 +36,7 @@ final class ai_searcher_test extends advanced_testcase {
      *
      * @return array[] Case Name → [Raw AI Data, Converted Data]
      */
-    public function convert_ai_response_to_json_dataprovider(): array {
+    public static function convert_ai_response_to_json_dataprovider(): array {
         return [
             'json inside markdown block' => [
                 'Ich habe die JSON generiert hier bitte: ```json [{"name":"Kekse"}]```',
@@ -88,7 +88,7 @@ final class ai_searcher_test extends advanced_testcase {
      *
      * @return array[] Case Name → [Json Data, Expected Activity Ranking]
      */
-    public function convert_json_to_ranking_dataprovider(): array {
+    public static function convert_json_to_ranking_dataprovider(): array {
         return [
             'valid data' => [
                 [['pluginname' => 'kekse', 'reason' => 'My Reason', 'hint' => 'My Hint', 'ranking' => 6]],

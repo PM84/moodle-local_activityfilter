@@ -22,6 +22,7 @@ use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use invalid_parameter_exception;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
 
 /**
@@ -31,6 +32,13 @@ use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_activities extends external_api {
+    /**
+     * Convert a users request into a structured AI answer
+     *
+     * @param string $prompt users AI request
+     * @return array
+     * @throws invalid_parameter_exception
+     */
     public static function execute(string $prompt): array {
         $params = self::validate_parameters(self::execute_parameters(), ['prompt' => $prompt]);
         $activitysearcher = di::get(i_activity_searcher::class);

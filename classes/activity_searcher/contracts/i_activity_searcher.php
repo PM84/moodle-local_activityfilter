@@ -18,6 +18,10 @@ namespace local_activityfilter\activity_searcher\contracts;
 
 /**
  * Filters for the user which activities fit his request
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 interface i_activity_searcher {
     /**

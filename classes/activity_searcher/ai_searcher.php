@@ -19,6 +19,7 @@ namespace local_activityfilter\activity_searcher;
 use context_system;
 use core_ai\aiactions\generate_text;
 use core_ai\manager;
+use dml_exception;
 use Exception;
 use local_activityfilter\activity_searcher\contracts\activity_ranking;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
@@ -30,12 +31,27 @@ use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class ai_searcher implements i_activity_searcher {
+    /**
+     * Constructor.
+     *
+     * @param i_activity_summarizer $summerizer Activity summarizer
+     * @param i_text_compressor $compressor Text compressor
+     */
     public function __construct(
         private readonly i_activity_summarizer $summerizer,
         private readonly i_text_compressor $compressor,
     ) {
     }
 
+    /**
+     * Searches for activities fitting to the given user request
+     * It will return an array of activity rankings
+     *
+     * @param string $request User request
+     * @return activity_ranking[] List of activity rankings
+     * @throws dml_exception
+     * @throws invalid_ai_response
+     */
     public function filter_activities(string $request): array {
         if (get_config('local_activityfilter', 'dummy_mode')) {
             $response = file_get_contents(__DIR__ . '/dummydata.json');
@@ -63,6 +79,14 @@ class ai_searcher implements i_activity_searcher {
         return $ratings;
     }
 
+    /**
+     * Prepares the complete AI Request
+     *
+     * @param string $userrequest User request
+     * @param activity_data[] $activitydata List of activity data
+     * @return generate_text Generate text task
+     * @throws dml_exception
+     */
     public function prepare_prompt(string $userrequest, array $activitydata): generate_text {
         global $USER;
         $plugindescription = json_encode($activitydata, JSON_UNESCAPED_UNICODE);
@@ -84,6 +108,13 @@ class ai_searcher implements i_activity_searcher {
         );
     }
 
+    /**
+     * Sends the request to the AI Manager
+     *
+     * @param generate_text $prompts Generate text request
+     * @return string AI Response
+     * @throws Exception
+     */
     public function send_request(generate_text $prompts): string {
         $response = (new manager())->process_action($prompts);
         if (!$response->get_success()) {
@@ -93,6 +124,12 @@ class ai_searcher implements i_activity_searcher {
         return $response->get_response_data()['generatedcontent'];
     }
 
+    /**
+     * Convert AI Response to an json
+     *
+     * @param string $text AI Response text
+     * @return array|false Converted json object or false if not convertable
+     */
     public function convert_ai_response_to_json(string $text): array|false {
         $directdecode = json_decode($text, true);
         if (json_last_error() == JSON_ERROR_NONE) {
@@ -116,6 +153,13 @@ class ai_searcher implements i_activity_searcher {
         return is_array($data) ? $data : false;
     }
 
+    /**
+     * Convert json object to ranking data
+     *
+     * @param mixed $json Array object or other data converted from json
+     * @param activity_data[] $activitydata Unconverted activity data
+     * @return activity_ranking[]|false Converted AI Response as rankings
+     */
     public function convert_json_to_ranking(mixed $json, array $activitydata): array|false {
         $data = [];
         foreach ($json as $rankingdata) {
@@ -136,6 +180,13 @@ class ai_searcher implements i_activity_searcher {
         return $data;
     }
 
+    /**
+     * Searches if plugin exist in activity data
+     *
+     * @param string $pluginname Activity name
+     * @param activity_data[] $activitydata List of all choose able activities
+     * @return activity_data|false If plugin name is not found in given activity data
+     */
     public function find_activity(string $pluginname, array $activitydata): activity_data|false {
         foreach ($activitydata as $activity) {
             if ($activity->name == $pluginname) {

@@ -24,27 +24,27 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Activity Filter';
+$string['hintcolumn'] = 'Description';
+$string['modal_title'] = 'Suggested Activities';
+$string['noresults'] = 'No results yet - please enter a prompt to begin.';
 
-$string['settings:systemprompt'] = 'System prompt';
-$string['settings:systemprompt_desc'] = 'Defines the system prompt used to guide the behaviour and responses of the AI model.';
+$string['occurences:moderately'] = 'moderately';
+$string['occurences:often'] = 'often';
+$string['occurences:rare'] = 'rare';
+$string['occurences:very_frequent'] = 'very frequent';
+$string['occurences:very_rare'] = 'very rare';
+
+$string['open_activityfilter'] = 'Open AI activity search';
+$string['pluginname'] = 'Activity Filter';
+$string['popularitycolumn'] = 'Usage';
+$string['promptdesc'] = 'What kind of activity would you like to find?';
+$string['reasoncolumn'] = 'Reason';
+$string['search'] = 'Search';
+
 $string['settings:dummy_mode'] = 'Dummy mode';
 $string['settings:dummy_mode_desc'] = 'Enables a development mode that simulates AI responses without contacting a live AI service.';
 $string['settings:plugin_ai_hint'] = 'Guidance text that informs the AI about the plugin’s features and behaviour.';
+$string['settings:systemprompt'] = 'System prompt';
+$string['settings:systemprompt_desc'] = 'Defines the system prompt used to guide the behaviour and responses of the AI model.';
 $string['settings:use_default'] = 'Use default ({$a})';
 $string['settings:use_default_desc'] = 'Use default setting for the plugin {$a}';
-
-$string['modal_title'] = 'Suggested Activities';
-$string['promptdesc'] = 'What kind of activity would you like to find?';
-$string['search'] = 'Search';
-$string['hintcolumn'] = 'Description';
-$string['reasoncolumn'] = 'Reason';
-$string['popularitycolumn'] = 'Usage';
-$string['noresults'] = 'No results yet - please enter a prompt to begin.';
-$string['open_activityfilter'] = 'Open AI activity search';
-
-$string['occurences:very_rare'] = 'very rare';
-$string['occurences:rare'] = 'rare';
-$string['occurences:moderately'] = 'moderately';
-$string['occurences:often'] = 'often';
-$string['occurences:very_frequent'] = 'very frequent';

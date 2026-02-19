@@ -18,7 +18,19 @@ namespace local_activityfilter\activity_searcher;
 
 use core\plugininfo\mod;
 
+/**
+ * Manage class to get activity plugin data.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class activity_plugins {
+    /**
+     * Returns an array of all enabled activities
+     *
+     * @return array|null Array of all enabled activities
+     */
     public function get_enabled_activity_names(): array|null {
         return mod::get_enabled_plugins();
     }

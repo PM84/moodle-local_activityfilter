@@ -19,12 +19,27 @@ namespace local_activityfilter\activity_searcher;
 use NlpTools\Documents\TokensDocument;
 use NlpTools\Tokenizers\PennTreeBankTokenizer;
 use voku\helper\StopWords;
+use voku\helper\StopWordsLanguageNotExists;
 
 defined('MOODLE_INTERNAL') || die();
 
 require(__DIR__ . '/../../vendor/autoload.php');
 
+/**
+ * Text compressor using stopword library.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class stopword_remover implements i_text_compressor {
+    /**
+     * Applies a shortening of the text for german and english texts
+     *
+     * @param string $text English or german text
+     * @return string Shortened english or german text
+     * @throws StopWordsLanguageNotExists Language not found in stopword library
+     */
     public function compress(string $text): string {
         $text = strtolower($text);
         $tokens = $this->tokenize($text);
@@ -33,12 +48,26 @@ class stopword_remover implements i_text_compressor {
         return preg_replace('/\s+([.,!?;:])/', '$1', $shorttext);
     }
 
+    /**
+     * Tokenizes text, notice this is only possible with
+     * languages like german, english… not with chinese
+     *
+     * @param string $text
+     * @return TokensDocument
+     */
     public function tokenize(string $text): TokensDocument {
         $tokenizer = new PennTreeBankTokenizer();
         $tokens = $tokenizer->tokenize($text);
         return new TokensDocument($tokens);
     }
 
+    /**
+     * Remove german and english stopwords
+     *
+     * @param TokensDocument $tokens Tokens to check
+     * @return void
+     * @throws StopWordsLanguageNotExists Language not found in stopword library
+     */
     public function apply_exclude_stopwords(TokensDocument $tokens): void {
         $stopwords = new StopWords();
         $words = array_merge(

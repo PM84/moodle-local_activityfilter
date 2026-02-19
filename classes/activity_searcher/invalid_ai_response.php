@@ -18,5 +18,12 @@ namespace local_activityfilter\activity_searcher;
 
 use Exception;
 
+/**
+ * Exception is thrown, if the AI responses in an unexpected way.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class invalid_ai_response extends Exception {
 }

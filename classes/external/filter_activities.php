@@ -45,12 +45,22 @@ class filter_activities extends external_api {
         return $activitysearcher->filter_activities($params['prompt']);
     }
 
+    /**
+     * Get expected input parameter structure for webservice
+     *
+     * @return external_function_parameters Function parameter structure
+     */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'prompt' => new external_value(PARAM_TEXT),
         ]);
     }
 
+    /**
+     * Get expected output format of webservice
+     *
+     * @return external_single_structure expected output format
+     */
     public static function execute_returns(): external_multiple_structure {
         return new external_multiple_structure(
             new external_single_structure([

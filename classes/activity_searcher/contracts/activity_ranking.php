@@ -40,6 +40,12 @@ class activity_ranking {
     ) {
     }
 
+    /**
+     * Converts an stdClass to this data class
+     *
+     * @param stdClass $obj stdClass object
+     * @return activity_ranking data object, containing the stdClass data
+     */
     public static function from_stdclass(stdClass $obj): activity_ranking {
         return new self(
             $obj->pluginname,

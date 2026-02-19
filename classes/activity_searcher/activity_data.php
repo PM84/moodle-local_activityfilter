@@ -18,7 +18,22 @@ namespace local_activityfilter\activity_searcher;
 
 use JsonSerializable;
 
+/**
+ * Activity data, required for an AI rating.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class activity_data implements JsonSerializable {
+    /**
+     * Constructor.
+     *
+     * @param string $name Activity plugin name
+     * @param string $displayname Plugin display name in language of the user
+     * @param string $pluginnamehelp Plugin description
+     * @param int $usagecount Total usage amount of the activity plugin, in the moodle
+     */
     public function __construct(
         public readonly string $name,
         public readonly string $displayname,
@@ -27,6 +42,11 @@ class activity_data implements JsonSerializable {
     ) {
     }
 
+    /**
+     * Converts data as json for the AI
+     *
+     * @return array Exported json serializable data
+     */
     public function jsonSerialize(): array {
         return [
             'name' => $this->name,

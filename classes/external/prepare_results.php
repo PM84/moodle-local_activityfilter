@@ -23,8 +23,23 @@ use core_external\external_single_structure;
 use core_external\external_value;
 use local_activityfilter\output\activity_rating_list;
 
+/**
+ * External service for rendering plugin rating results.
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2025, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class prepare_results extends external_api {
-    public static function execute($items): array {
+    /**
+     * Render given activity ratings
+     *
+     * @param array $items List of activity ratings
+     * @return array Structure containing html code
+     * @throws \core\exception\coding_exception
+     * @throws \invalid_parameter_exception
+     */
+    public static function execute(array $items): array {
         global $OUTPUT;
 
         $params = self::validate_parameters(self::execute_parameters(), ['items' => $items]);
@@ -33,6 +48,11 @@ class prepare_results extends external_api {
         return ['html' => $OUTPUT->render($ratinglist)];
     }
 
+    /**
+     * Get expected input parameter structure for webservice
+     *
+     * @return external_function_parameters Function parameter structure
+     */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'items' => new external_multiple_structure(new external_single_structure([
@@ -45,6 +65,11 @@ class prepare_results extends external_api {
         ]);
     }
 
+    /**
+     * Get expected output format of webservice
+     *
+     * @return external_single_structure expected output format
+     */
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
             'html' => new external_value(PARAM_RAW, 'Rendered HTML for results'),

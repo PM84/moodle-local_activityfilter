@@ -18,6 +18,7 @@ namespace local_activityfilter\test\unit;
 
 use advanced_testcase;
 use core\di;
+use local_activityfilter\activity_searcher\activity_data;
 use local_activityfilter\activity_searcher\ai_searcher;
 use local_activityfilter\activity_searcher\contracts\activity_ranking;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
@@ -77,9 +78,7 @@ final class ai_searcher_test extends advanced_testcase {
      * @dataProvider convert_ai_response_to_json_dataprovider
      */
     public function test_convert_ai_response_to_json(string $jsontext, array|false $expectedjsonobject): void {
-        $compressor = di::get(i_text_compressor::class);
-        $activitysummerizer = di::get(i_activity_searcher::class);
-        $aisearcher = new ai_searcher($activitysummerizer, $compressor);
+        $aisearcher = di::get(i_activity_searcher::class);
 
         $jsonobject = $aisearcher->convert_ai_response_to_json($jsontext);
 
@@ -95,11 +94,11 @@ final class ai_searcher_test extends advanced_testcase {
         return [
             'valid data' => [
                 [['pluginname' => 'kekse', 'reason' => 'My Reason', 'hint' => 'My Hint', 'ranking' => 6]],
-                [new activity_ranking('kekse', 'Kekse', 'My Reason', 'My Hint', 5, 6, '')],
+                [new activity_ranking('kekse', 'Kekse', 'My Reason', 'My Hint', 0, 6, '')],
             ],
             'missing key' => [
                 [['pluginname' => 'kekse', 'hint' => 'My Hint', 'ranking' => 6]],
-                [new activity_ranking('kekse', 'Kekse', '', 'My Hint', 5, 6, '')],
+                [new activity_ranking('kekse', 'Kekse', '', 'My Hint', 0, 6, '')],
             ],
             'missing pluginname' => [
                 [['reason' => 'My Reason', 'hint' => 'My Hint', 'ranking' => 6]],
@@ -121,12 +120,10 @@ final class ai_searcher_test extends advanced_testcase {
      * @dataProvider convert_json_to_ranking_dataprovider
      */
     public function test_convert_json_to_ranking(mixed $jsonobject, array $expectedrankings): void {
-        $compressor = di::get(i_text_compressor::class);
-        $activitysummerizer = di::get(i_activity_searcher::class);
-        $aisearcher = new ai_searcher($activitysummerizer, $compressor);
+        $aisearcher = di::get(i_activity_searcher::class);
         $activitydata = [
-            content_item_generator::generate_content_item('kekse', ['help' => 'Hilfe']),
-            content_item_generator::generate_content_item('leber', ['help' => 'Hilfe2']),
+            new activity_data(content_item_generator::generate_content_item('kekse', ['help' => 'Hilfe'])),
+            new activity_data(content_item_generator::generate_content_item('leber', ['help' => 'Hilfe2'])),
         ];
 
         $rankings = $aisearcher->convert_json_to_ranking($jsonobject, $activitydata);

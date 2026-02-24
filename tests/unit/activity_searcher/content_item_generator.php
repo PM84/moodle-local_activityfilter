@@ -47,7 +47,7 @@ class content_item_generator {
             new moodle_url($content['url'] ?? ""),
             $content['icon'] ?? "",
             $content['help'] ?? "",
-            $content['archtype'] ?? "",
+            $content['archtype'] ?? 0,
             $content['componentname'] ?? "",
             $content['purpose'] ?? ""
         );

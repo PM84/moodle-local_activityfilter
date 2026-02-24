@@ -1,59 +1,42 @@
 # Activity Filter
-
-**Activity Filter** ist ein lokales Plugin für Moodle, welches dabei helfen soll passende Aktivitäten
-auszuwählen. Mithilfe des AI Subsystems werden Nutzeranfragen verarbeitet und passende Aktivitäten heraus-
-gesucht.
+**Activity Filter** is a local plugin for Moodle that is intended to help you find suitable activities.
+With the help of the AI subsystem, user requests are processed and suitable activities are identified.
 
 ## Features
-
-- Vorschlagen von Aktivitäten für bestimmte Aufgaben
-- Einstellbarer System- und Pluginprompt
+Suggest activities for specific tasks
+- Adjustable system and plugin prompt
 
 ## Installation
+1. Clone the repository to the '/local/pluginname' directory of the Moodle installation.
+2. Go to **Website Administration → System Messages** to initiate or execute the installation 'admin/cli/upgrade.php'.
 
-1. Clone das Repository in das `/local/pluginname`-Verzeichnis der Moodle-Installation.
-2. Ruf' **Website-Administration → Systemnachrichten** auf, um die Installation anzustoßen oder führ'
-   `admin/cli/upgrade.php` aus.
+### Prerequisites
+- Depends on the AI subsystem (generate_text)
 
-### Voraussetzungen
+## Configuration
 
-- Abhängig vom AI-Subsystem (generate_text)
+Once installed, the plugin can be configured in the following ways: **Website Administration → Plugins → Local Plugins → Plugin Name** 
 
-## Konfiguration
+Before starting the plugin, the following settings must be set: 
+- AI Subsystem must be enabled, with at least one text generation option Settings: 
+- System prompt: With the help of the system prompt, the results of the AI can be configured appropriately. 
 
-Nach Installation kann das Plugin auf folgenden Weg konfiguriert werden:  
-**Website-Administration → Plugins → Lokale Plugins → Plugin Name**
+## Usage
+- Navigate to a course
+- Open the button to add an activity.
+- Click on "Open AI Activity Search"
 
-Vor Inbetriebnahme des Plugins müssen folgende Einstellungen gesetzt werden:
-
-- AI Subsystem muss aktiviert sein, mit mindestens einer Textgenerierungsoption
-
-Einstellungen:
-
-- Systemprompt: Mithilfe des Systemprompts können die Ergebnisse der AI passend konfiguriert werden.
-
-## Nutzung
-
-- Navigiere zu einem Kurs.
-- Öffne den Button um eine Aktivität hinzufügen.
-- Klicke auf "KI-Aktivitätensuche öffnen"
-
-## Rechte
-
--
+## Rights
 
 ## Cronjobs
 
--
-
 ## Web Services
+This plugin provides the following web service functions:
 
-Dieses Plugin stellt folgende Webservice-Funktionen zur Verfügung:
-
-| Webservice-Funktion                      | Beschreibung                                           |
-|------------------------------------------|--------------------------------------------------------|
-| `local_activityfilter_filter_activities` | Stellt eine Anfrage an die KI für eine Ratingübersicht |
-| `local_activityfilter_prepare_results`   | Erstellt die Datestellung für die Ratingübersicht      |
+| Web Service Function                      | Description                                     |
+|------------------------------------------|--------------------------------------------------|
+| `local_activityfilter_filter_activities` | Makes a request to the AI for a rating overview  |
+| `local_activityfilter_prepare_results`   | Renders an AI Request for the frontend           |
 
 ## Installing via uploaded ZIP file ##
 

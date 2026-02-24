@@ -22,7 +22,7 @@ use core_privacy\local\metadata\null_provider;
  * Privacy provider
  *
  * @author Konrad Ebel <konrad.ebel@oncampus.de>
- * @copyright 2025, oncampus GmbH
+ * @copyright 2026, oncampus GmbH
  * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements null_provider {

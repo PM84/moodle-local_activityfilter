@@ -22,6 +22,10 @@ use moodle_url;
 
 /**
  * Generator for content items
+ *
+ * @author Konrad Ebel <konrad.ebel@oncampus.de>
+ * @copyright 2026, oncampus GmbH
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_item_generator {
     /**

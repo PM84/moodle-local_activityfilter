@@ -35,10 +35,10 @@ class activity_summarizer implements i_activity_summarizer {
     /**
      * Constructor.
      *
-     * @param content_item_acl $activityplugins Activity plugin manager
+     * @param content_item_manager $activityplugins Activity plugin manager
      */
     public function __construct(
-        private readonly content_item_acl $activityplugins,
+        private readonly content_item_manager $activityplugins,
     ) {
     }
 

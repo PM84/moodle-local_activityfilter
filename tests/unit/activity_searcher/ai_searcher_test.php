@@ -14,13 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_activityfilter\test\unit;
+
+use advanced_testcase;
 use core\di;
-use local_activityfilter\activity_searcher\activity_data;
 use local_activityfilter\activity_searcher\ai_searcher;
 use local_activityfilter\activity_searcher\contracts\activity_ranking;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
-use local_activityfilter\activity_searcher\i_activity_summarizer;
 use local_activityfilter\activity_searcher\i_text_compressor;
+
+require_once(__DIR__ . '/content_item_generator.php');
 
 /**
  * Unit test for AI Searcher.
@@ -92,11 +95,11 @@ final class ai_searcher_test extends advanced_testcase {
         return [
             'valid data' => [
                 [['pluginname' => 'kekse', 'reason' => 'My Reason', 'hint' => 'My Hint', 'ranking' => 6]],
-                [new activity_ranking('kekse', 'My Reason', 'My Hint', 5, 6)],
+                [new activity_ranking('kekse', 'Kekse', 'My Reason', 'My Hint', 5, 6, '')],
             ],
             'missing key' => [
                 [['pluginname' => 'kekse', 'hint' => 'My Hint', 'ranking' => 6]],
-                [new activity_ranking('kekse', '', 'My Hint', 5, 6)],
+                [new activity_ranking('kekse', 'Kekse', '', 'My Hint', 5, 6, '')],
             ],
             'missing pluginname' => [
                 [['reason' => 'My Reason', 'hint' => 'My Hint', 'ranking' => 6]],
@@ -122,8 +125,8 @@ final class ai_searcher_test extends advanced_testcase {
         $activitysummerizer = di::get(i_activity_searcher::class);
         $aisearcher = new ai_searcher($activitysummerizer, $compressor);
         $activitydata = [
-            new activity_data('kekse', 'Hilfe', 3, 0),
-            new activity_data('leber', 'Hilfe2', 6, 0),
+            content_item_generator::generate_content_item('kekse', ['help' => 'Hilfe']),
+            content_item_generator::generate_content_item('leber', ['help' => 'Hilfe2']),
         ];
 
         $rankings = $aisearcher->convert_json_to_ranking($jsonobject, $activitydata);

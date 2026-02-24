@@ -14,9 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_activityfilter\test\unit;
+
+use advanced_testcase;
+use core_course\local\entity\content_item;
 use local_activityfilter\activity_searcher\activity_data;
-use local_activityfilter\activity_searcher\contentitemacl;
+use local_activityfilter\activity_searcher\content_item_manager;
 use local_activityfilter\activity_searcher\activity_summarizer;
+
+require_once(__DIR__ . '/content_item_generator.php');
 
 /**
  * Unit test for Activity Summarizer.
@@ -29,6 +35,8 @@ use local_activityfilter\activity_searcher\activity_summarizer;
 final class activity_summarizer_test extends advanced_testcase {
     /** @var activity_summarizer Object to test */
     private activity_summarizer $activitysummerizer;
+    /** @var content_item Testing object */
+    private content_item $contentitem;
 
     /**
      * Constructor.
@@ -41,20 +49,15 @@ final class activity_summarizer_test extends advanced_testcase {
         parent::setUp();
         $this->resetAfterTest();
 
-        $pluginmanager = $this->createMock(core_plugin_manager::class);
-        $pluginmanager->method('get_plugins_of_type')
-            ->willReturn([
-                        'myplugin' => [],
-                        'subsection' => [],
-                      ]);
-
-        $activities = $this->createMock(contentitemacl::class);
-        $activities->method('get_enabled_activity_names')
-            ->willReturn(['myplugin' => 'myplugin']);
+        $this->contentitem = content_item_generator::generate_content_item(
+            'myplugin',
+            []
+        );
+        $activities = $this->createMock(content_item_manager::class);
+        $activities->method('get_all')
+            ->willReturn([$this->contentitem]);
 
         $this->activitysummerizer = new activity_summarizer(
-            di::get(moodle_database::class),
-            $pluginmanager,
             $activities
         );
     }
@@ -67,9 +70,7 @@ final class activity_summarizer_test extends advanced_testcase {
      * @return void
      */
     public function test_get_activities(): void {
-        $expected = [
-            'myplugin' => [],
-        ];
+        $expected = [$this->contentitem];
 
         $activities = $this->activitysummerizer->get_activities();
 
@@ -84,12 +85,7 @@ final class activity_summarizer_test extends advanced_testcase {
      */
     public function test_get_activity_data(): void {
         $expected = [
-            new activity_data(
-                'myplugin',
-                'my ai help',
-                0,
-                0
-            ),
+            new activity_data($this->contentitem),
         ];
         set_config('ai_hint_myplugin', 'my ai help', 'local_activityfilter');
 

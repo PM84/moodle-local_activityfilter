@@ -28,7 +28,7 @@ use core_course\local\repository\content_item_readonly_repository_interface;
  * @copyright 2025, oncampus GmbH
  * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class content_item_acl {
+class content_item_manager {
     /** @var content_item_readonly_repository_interface Repo for fetching content items */
     private content_item_readonly_repository_interface $repository;
 

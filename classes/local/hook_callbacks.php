@@ -22,7 +22,7 @@ use core_ai\aiactions\generate_text;
 use core_ai\manager;
 use core_plugin_manager;
 use local_activityfilter\activity_searcher\ai_dummy_searcher;
-use local_activityfilter\activity_searcher\content_item_acl;
+use local_activityfilter\activity_searcher\content_item_manager;
 use local_activityfilter\activity_searcher\activity_summarizer;
 use local_activityfilter\activity_searcher\ai_searcher;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
@@ -57,7 +57,7 @@ class hook_callbacks {
             id: i_activity_summarizer::class,
             definition: function (): i_activity_summarizer {
                 return new activity_summarizer(
-                    new content_item_acl(),
+                    new content_item_manager(),
                 );
             }
         );

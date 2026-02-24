@@ -53,15 +53,6 @@ class ai_searcher implements i_activity_searcher {
      * @throws invalid_ai_response
      */
     public function filter_activities(string $request): array {
-        if (get_config('local_activityfilter', 'dummy_mode')) {
-            $response = file_get_contents(__DIR__ . '/dummydata.json');
-            $decoded = json_decode($response, true);
-            if ($decoded === null) {
-                throw new Exception("Json encode error: " . json_last_error_msg());
-            }
-            return $decoded;
-        }
-
         $activitysummary = $this->summerizer->get_activity_data();
         $prompt = self::prepare_prompt($request, $activitysummary);
         $response = self::send_request($prompt);
@@ -173,7 +164,9 @@ class ai_searcher implements i_activity_searcher {
                 continue;
             }
 
-            $rankingdata['occurences'] = $activity->usagecount;
+            $rankingdata['occurences'] = $activity->get_usage_amount();
+            $rankingdata['logohtml'] = $activity->get_logo_html();
+            $rankingdata['title'] = $activity->get_title();
             $data[] = activity_ranking::from_stdclass((object)$rankingdata);
         }
 
@@ -189,7 +182,7 @@ class ai_searcher implements i_activity_searcher {
      */
     public function find_activity(string $pluginname, array $activitydata): activity_data|false {
         foreach ($activitydata as $activity) {
-            if ($activity->name == $pluginname) {
+            if ($activity->get_name() == $pluginname) {
                 return $activity;
             }
         }

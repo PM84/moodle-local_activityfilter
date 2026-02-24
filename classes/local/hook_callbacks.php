@@ -16,14 +16,18 @@
 
 namespace local_activityfilter\local;
 
-use core\hook\after_config;
+use core\hook\output\before_html_attributes;
 use core\hook\di_configuration;
+use core_ai\aiactions\generate_text;
+use core_ai\manager;
 use core_plugin_manager;
-use local_activityfilter\activity_searcher\activity_plugins;
+use local_activityfilter\activity_searcher\ai_dummy_searcher;
+use local_activityfilter\activity_searcher\content_item_acl;
 use local_activityfilter\activity_searcher\activity_summarizer;
 use local_activityfilter\activity_searcher\ai_searcher;
 use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
 use local_activityfilter\activity_searcher\i_activity_summarizer;
+use local_activityfilter\activity_searcher\i_text_compressor;
 use local_activityfilter\activity_searcher\stopword_remover;
 use moodle_database;
 
@@ -43,15 +47,17 @@ class hook_callbacks {
      */
     public static function di_configuration(di_configuration $hook): void {
         $hook->add_definition(
+            id: i_text_compressor::class,
+            definition: function (): i_text_compressor {
+                return new stopword_remover();
+            }
+        );
+
+        $hook->add_definition(
             id: i_activity_summarizer::class,
-            definition: function (
-                moodle_database $db,
-            ): i_activity_summarizer {
+            definition: function (): i_activity_summarizer {
                 return new activity_summarizer(
-                    $db,
-                    core_plugin_manager::instance(),
-                    new activity_plugins(),
-                    new stopword_remover(),
+                    new content_item_acl(),
                 );
             }
         );
@@ -61,6 +67,10 @@ class hook_callbacks {
             definition: function (
                 i_activity_summarizer $summerizer,
             ): i_activity_searcher {
+                if (get_config('local_activityfilter', 'dummy_mode')) {
+                    return new ai_dummy_searcher();
+                }
+
                 return new ai_searcher(
                     $summerizer,
                     new stopword_remover()
@@ -72,10 +82,14 @@ class hook_callbacks {
     /**
      * Injects JS to add activity filter to course section menu
      *
-     * @param after_config $hook After config hook
+     * @param before_html_attributes $hook After config hook
      * @return void
      */
-    public static function after_config(after_config $hook): void {
+    public static function before_html_attributes(before_html_attributes $hook): void {
+        if (!manager::is_action_available(generate_text::class)) {
+            return;
+        }
+
         global $PAGE;
         $PAGE->requires->js_call_amd(
             'local_activityfilter/showmodal',

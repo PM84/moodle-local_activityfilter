@@ -30,17 +30,21 @@ class activity_ranking {
      * Constructor
      *
      * @param string $pluginname Name of the mod plugin
+     * @param string $title Title of the plugin in the user language
      * @param string $reason Reason why this plugin fits to the request
      * @param string $hint Way how to use this plugin, so it can fulfill the request
      * @param int $popularity How often it's used in the moodle 0-10
      * @param int $ranking Ranking, how much it fits to the request 0-10
+     * @param string $logohtml HTML of the component item logo
      */
     public function __construct(
         public readonly string $pluginname,
+        public readonly string $title,
         public readonly string $reason,
         public readonly string $hint,
         public readonly int $occurences,
         public readonly int $ranking,
+        public readonly string $logohtml
     ) {
     }
 
@@ -53,10 +57,12 @@ class activity_ranking {
     public static function from_stdclass(stdClass $obj): activity_ranking {
         return new self(
             $obj->pluginname,
+            $obj->title ?? "",
             $obj->reason ?? "",
             $obj->hint ?? "",
             $obj->occurences ?? 0,
             $obj->ranking ?? 0,
+            $obj->logohtml ?? ""
         );
     }
 }

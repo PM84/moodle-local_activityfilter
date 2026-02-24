@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['error:ai_call'] = 'Die KI-Anfrage ist fehlgeschlagen. Bitte versuche es später erneut.';
+
 $string['hintcolumn'] = 'Beschreibung';
 $string['modal_title'] = 'Vorgeschlagene Aktivitäten';
 $string['noresults'] = 'Noch keine Ergebnisse – bitte geben Sie zuerst eine Anfrage ein.';

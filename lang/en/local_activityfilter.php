@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['error:ai_call'] = 'The AI request failed. Please try again later.';
+
 $string['hintcolumn'] = 'Description';
 $string['modal_title'] = 'Suggested Activities';
 $string['noresults'] = 'No results yet - please enter a prompt to begin.';

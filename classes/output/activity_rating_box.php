@@ -21,9 +21,11 @@ use core\di;
 use core\output\renderer_base;
 use dml_exception;
 use lang_string;
+use local_activityfilter\activity_searcher\contracts\activity_ranking;
 use moodle_database;
 use renderable;
 use templatable;
+use function debugging;
 
 /**
  * UI-Component for an activity rating for a use case.
@@ -35,8 +37,8 @@ use templatable;
 class activity_rating_box implements renderable, templatable {
     /** @var string Name of this plugin */
     private const PLUGIN_NAME = 'local_activityfilter';
-    /** @var array Activity rating data from AI */
-    private readonly array $activityrating;
+    /** @var activity_ranking Activity rating data from AI */
+    private readonly activity_ranking $activityrating;
 
     /**
      * Constructor.
@@ -44,7 +46,8 @@ class activity_rating_box implements renderable, templatable {
      * @param array $activityrating Activity rating data from AI
      */
     public function __construct(
-        array $activityrating
+        private int $id,
+        activity_ranking $activityrating
     ) {
         $this->activityrating = $activityrating;
     }
@@ -57,28 +60,20 @@ class activity_rating_box implements renderable, templatable {
      * @throws coding_exception
      */
     public function export_for_template(?renderer_base $output = null): array {
-        global $OUTPUT;
         $rating = $this->activityrating;
         // Validate AI Ranking.
-        $rankfix = (int)$rating['ranking'] ?? 0;
+        $rankfix = (int)$rating->ranking ?? 0;
         $rankfix = max(0, min(10, $rankfix));
 
-        // Search plugin language string.
-        $pluginname = get_string('pluginname', "mod_" . $rating['pluginname']);
-        if ($pluginname == "[[pluginname]]") {
-            $pluginname = $rating['pluginname'];
-        }
-
         return [
-            'id' => $rating['id'],
-            'pluginname' => $pluginname,
-            'description' => $rating['description'],
-            'hint' => $rating['hint'],
+            'id' => $this->id,
+            'pluginname' => $rating->title,
+            'hint' => $rating->hint,
             'ranking' => $rankfix,
-            'reason' => $rating['reason'],
+            'reason' => $rating->reason,
             'occurences' => $this->get_occurance_string(),
             'stars' => self::convert_ranking_stars($rankfix),
-            'activityicon' => $OUTPUT->image_icon('monologo', '', $rating['pluginname']),
+            'activityicon' => $rating->logohtml,
         ];
     }
 
@@ -90,7 +85,7 @@ class activity_rating_box implements renderable, templatable {
      */
     private function get_occurance_string(): string {
         $maxusage = max($this->get_max_activity_usage_amount(), 1);
-        $frequencyranking = $this->activityrating["occurences"] * 5 / $maxusage;
+        $frequencyranking = $this->activityrating->occurences * 5 / $maxusage;
         $frequencyranking = floor($frequencyranking);
 
         switch ($frequencyranking) {
@@ -117,14 +112,19 @@ class activity_rating_box implements renderable, templatable {
      */
     private function get_max_activity_usage_amount(): int {
         $db = di::get(moodle_database::class);
-        return $db->get_record_sql(
-            'SELECT COUNT(*)
+        $record = $db->get_record_sql(
+            'SELECT COUNT(*) AS count
                  FROM {course_modules} cm
                  JOIN {modules} m ON m.id = cm.module
                  GROUP BY m.name
                  ORDER BY COUNT(*) DESC',
             strictness: IGNORE_MULTIPLE
         );
+        if ($record === false) {
+            debugging('No activities available for counting');
+            return 0;
+        }
+        return $record->count;
     }
 
     /**

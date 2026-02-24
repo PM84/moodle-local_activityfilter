@@ -23,7 +23,7 @@
 
 use core\di;
 use local_activityfilter\activity_searcher\i_activity_summarizer;
-use local_activityfilter\local\plugin_description;
+use local_activityfilter\local\overwritten_content_item_description;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -76,21 +76,29 @@ $activitysummerizer = di::get(i_activity_summarizer::class);
 $activities = $activitysummerizer->get_activities();
 
 foreach ($activities as $activity) {
+    $itemid = $activity->get_name();
+    $displayname = $activity->get_title()->get_value();
+
     $settings->add(
         new admin_setting_configcheckbox(
-            "local_activityfilter/ai_hint_{$activity->name}_use_default",
-            get_string('settings:use_default', 'local_activityfilter', $activity->displayname),
-            get_string('settings:use_default_desc', 'local_activityfilter', $activity->displayname),
+            "local_activityfilter/ai_hint_{$itemid}_use_default",
+            get_string('settings:use_default', 'local_activityfilter', $displayname),
+            get_string('settings:use_default_desc', 'local_activityfilter', $displayname),
             true
         )
     );
 
+    $defaulthelp = overwritten_content_item_description::get_overwritten_default($itemid);
+    if (!$defaulthelp) {
+        $defaulthelp = overwritten_content_item_description::clean_core_help($activity->get_help());
+    }
+
     $settings->add(
         new admin_setting_configtextarea(
-            "local_activityfilter/ai_hint_$activity->name",
-            $activity->displayname,
+            "local_activityfilter/ai_hint_{$itemid}",
+            $displayname,
             get_string('settings:plugin_ai_hint', 'local_activityfilter'),
-            plugin_description::get_default($activity->name),
+            $defaulthelp,
         )
     );
 }

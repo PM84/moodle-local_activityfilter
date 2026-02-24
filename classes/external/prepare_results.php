@@ -16,11 +16,13 @@
 
 namespace local_activityfilter\external;
 
+use core\exception\coding_exception;
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use invalid_parameter_exception;
 use local_activityfilter\output\activity_rating_list;
 
 /**
@@ -36,8 +38,8 @@ class prepare_results extends external_api {
      *
      * @param array $items List of activity ratings
      * @return array Structure containing html code
-     * @throws \core\exception\coding_exception
-     * @throws \invalid_parameter_exception
+     * @throws coding_exception
+     * @throws invalid_parameter_exception
      */
     public static function execute(array $items): array {
         global $OUTPUT;
@@ -56,11 +58,13 @@ class prepare_results extends external_api {
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'items' => new external_multiple_structure(new external_single_structure([
-                'pluginname' => new external_value(PARAM_TEXT, 'module name (e.g. assign, wiki)'),
+                'pluginname' => new external_value(PARAM_TEXT, 'component item name (e.g. assign, wiki)'),
+                'title' => new external_value(PARAM_TEXT, 'user-friendly component item name'),
+                'logohtml' => new external_value(PARAM_RAW, 'Logo html of the component item'),
                 'ranking'    => new external_value(PARAM_INT, '1..10'),
                 'occurences' => new external_value(PARAM_INT, 'optional', VALUE_OPTIONAL),
-                'hint'       => new external_value(PARAM_RAW, 'optional', VALUE_OPTIONAL),
-                'reason'     => new external_value(PARAM_RAW, 'optional', VALUE_OPTIONAL),
+                'hint'       => new external_value(PARAM_TEXT, 'optional', VALUE_OPTIONAL),
+                'reason'     => new external_value(PARAM_TEXT, 'optional', VALUE_OPTIONAL),
             ])),
         ]);
     }

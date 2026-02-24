@@ -1,6 +1,8 @@
 [
   {
     "pluginname": "assign",
+    "title": "Zuweisen",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 9,
     "occurences": 132,
     "hint": "Allows teachers to assign tasks, collect student work (files & text), and provide feedback\/grades.",
@@ -8,6 +10,8 @@
   },
   {
     "pluginname": "bigbluebuttonbn",
+    "title": "BigBlueButton",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 8,
     "occurences": 23,
     "hint": "Provides a web conferencing platform for live online classes, virtual office hours, and group collaboration.",
@@ -15,6 +19,8 @@
   },
   {
     "pluginname": "chat",
+    "title": "Forum",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 7,
     "occurences": 64,
     "hint": "Enables text-based, real-time synchronous discussions among participants.",
@@ -22,6 +28,8 @@
   },
   {
     "pluginname": "Choice",
+    "title": "Abstimmung",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 6,
     "occurences": 23,
     "hint": "Allows teachers to link to external URLs (websites, files) for various purposes.",
@@ -29,6 +37,8 @@
   },
   {
     "pluginname": "workshop",
+    "title": "Gruppenarbeit",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 7,
     "occurences": 13,
     "hint": "Facilitates collection, review, and peer assessment of student work.",
@@ -36,6 +46,8 @@
   },
   {
     "pluginname": "book",
+    "title": "Buch",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 5,
     "occurences": 2,
     "hint": "Creates multi-page resources with chapters, subchapters, text & media for displaying information.",
@@ -43,6 +55,8 @@
   },
   {
     "pluginname": "wiki",
+    "title": "Wiki",
+    "logohtml": "<i class='icon-search'></i>",
     "ranking": 5,
     "occurences": 3,
     "hint": "Enables collaborative creation and editing of web pages.",

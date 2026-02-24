@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 use local_activityfilter\activity_searcher\activity_data;
-use local_activityfilter\activity_searcher\activity_plugins;
+use local_activityfilter\activity_searcher\contentitemacl;
 use local_activityfilter\activity_searcher\activity_summarizer;
 
 /**
@@ -48,7 +48,7 @@ final class activity_summarizer_test extends advanced_testcase {
                         'subsection' => [],
                       ]);
 
-        $activities = $this->createMock(activity_plugins::class);
+        $activities = $this->createMock(contentitemacl::class);
         $activities->method('get_enabled_activity_names')
             ->willReturn(['myplugin' => 'myplugin']);
 

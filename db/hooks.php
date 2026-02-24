@@ -22,7 +22,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core\hook\after_config;
+use core\hook\output\before_html_attributes;
 use core\hook\di_configuration;
 use local_activityfilter\local\hook_callbacks;
 
@@ -34,7 +34,7 @@ $callbacks = [
         'callback' => [hook_callbacks::class, 'di_configuration'],
     ],
     [
-        'hook' => after_config::class,
-        'callback' => [hook_callbacks::class, 'after_config'],
+        'hook' => before_html_attributes::class,
+        'callback' => [hook_callbacks::class, 'before_html_attributes'],
     ],
 ];

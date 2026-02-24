@@ -18,6 +18,7 @@ namespace local_activityfilter\output;
 
 use coding_exception;
 use core\output\renderer_base;
+use local_activityfilter\activity_searcher\contracts\activity_ranking;
 use renderable;
 use templatable;
 
@@ -52,13 +53,12 @@ class activity_rating_list implements renderable, templatable {
      */
     public function export_for_template(?renderer_base $output = null): array {
         $exported = [];
-        $i = 1;
+        $id = 1;
 
         foreach ($this->activityratings as $activity) {
-            $activity['id'] = $i;
-            $box = new activity_rating_box($activity);
+            $box = new activity_rating_box($id, activity_ranking::from_stdclass((object)$activity));
             $exported[] = $box->export_for_template($output);
-            $i++;
+            $id++;
         }
 
         return [

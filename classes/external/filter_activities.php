@@ -64,7 +64,9 @@ class filter_activities extends external_api {
     public static function execute_returns(): external_multiple_structure {
         return new external_multiple_structure(
             new external_single_structure([
-                    'pluginname' => new external_value(PARAM_ALPHANUM),
+                    'pluginname' => new external_value(PARAM_TEXT),
+                    'title' => new external_value(PARAM_TEXT),
+                    'logohtml' => new external_value(PARAM_RAW),
                     'ranking' => new external_value(PARAM_INT),
                     'occurences' => new external_value(PARAM_INT),
                     'hint' => new external_value(PARAM_TEXT),

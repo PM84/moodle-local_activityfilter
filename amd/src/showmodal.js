@@ -53,13 +53,24 @@ async function search(modalRoot) {
         window.console.error(error.message);
 
         if (results) {
+            const errorText = await getErrorText();
             results.innerHTML = `
             <div class="alert alert-danger">
-                Something went wrong. Please try again later.
+                ${errorText}
             </div>`;
         }
     }
 }
+
+/**
+ * Load an error text if AI Call failed
+ *
+ * @returns {Promise<string>}
+ */
+const getErrorText = () => getString(
+    'error:ai_call',
+    'local_activityfilter'
+);
 
 /**
  * Load the header text of the modal
@@ -87,11 +98,10 @@ const getOpenButtonText = () => getString(
  * @returns {Promise<void>}
  */
 async function openActivityFilter() {
-    const header = await getModalHeader();
     const bodyHTML = await Templates.render('local_activityfilter/activityfilter_modal', []);
 
     const modal = await Modal.create({
-        title: header,
+        title: getModalHeader(),
         body: bodyHTML,
         footer: '',
     });
@@ -100,7 +110,7 @@ async function openActivityFilter() {
     const modalRoot = modal.getRoot()[0];
     const searchButton = modalRoot.querySelector(selectors.searchButton);
 
-    searchButton.addEventListener('click', async () => {
+    searchButton.addEventListener('click', async() => {
         searchButton.disabled = true;
         searchButton.classList.add('disabled');
         searchButton.querySelector('.label').classList.add('d-none');

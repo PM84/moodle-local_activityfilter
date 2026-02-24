@@ -17,9 +17,9 @@
 namespace local_activityfilter\activity_searcher;
 
 use coding_exception;
-use core_plugin_manager;
+use core_course\local\entity\content_item;
 use dml_exception;
-use local_activityfilter\local\plugin_description;
+use local_activityfilter\local\overwritten_content_item_description;
 use moodle_database;
 use RuntimeException;
 
@@ -35,16 +35,10 @@ class activity_summarizer implements i_activity_summarizer {
     /**
      * Constructor.
      *
-     * @param moodle_database $db Database
-     * @param core_plugin_manager $pluginmanager Moodle plugin manager
-     * @param activity_plugins $activityplugins Activity plugin manager
-     * @param i_text_compressor $compressor Text compressor
+     * @param content_item_acl $activityplugins Activity plugin manager
      */
     public function __construct(
-        private readonly moodle_database $db,
-        private readonly core_plugin_manager $pluginmanager,
-        private readonly activity_plugins $activityplugins,
-        private readonly i_text_compressor $compressor,
+        private readonly content_item_acl $activityplugins,
     ) {
     }
 
@@ -56,42 +50,14 @@ class activity_summarizer implements i_activity_summarizer {
      * @throws dml_exception
      */
     public function get_activity_data(): array {
-        $activitynames = $this->activityplugins->get_enabled_activity_names();
-        if (empty($activitynames)) {
-            throw new RuntimeException("No activity data found");
+        $contentitems = $this->activityplugins->get_all();
+        if (empty($contentitems)) {
+            throw new RuntimeException("No content items found");
         }
 
-        $data = [];
-        foreach ($activitynames as $activityname) {
-            $data[] = new activity_data(
-                $activityname,
-                get_string('pluginname', "mod_" . $activityname),
-                $this->compressor->compress(
-                    plugin_description::get($activityname)
-                ),
-                $this->get_activity_usage_amount($activityname),
-            );
-        }
-
-        return $data;
-    }
-
-    /**
-     * Gets the total usage amount of the given plugin
-     *
-     * @param string $activityname Activity name of the plugin
-     * @return int Total usage amount in moodle
-     * @throws dml_exception
-     */
-    private function get_activity_usage_amount(string $activityname): int {
-        return $this->db->count_records_sql(
-            'SELECT COUNT(1)
-             FROM {course_modules} cm
-             LEFT JOIN {modules} m
-                ON m.id = cm.module
-             WHERE m.name = :activityname',
-            ['activityname' => $activityname]
-        );
+        return array_map(function (content_item $item): activity_data {
+            return new activity_data($item);
+        }, $contentitems);
     }
 
     /**
@@ -100,8 +66,6 @@ class activity_summarizer implements i_activity_summarizer {
      * @return array List of all choose able activity plugins
      */
     public function get_activities(): array {
-        $plugins = $this->pluginmanager->get_plugins_of_type('mod');
-        unset($plugins["subsection"]);
-        return $plugins;
+        return $this->activityplugins->get_all();
     }
 }

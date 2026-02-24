@@ -24,7 +24,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_activityfilter';
-$plugin->release = '0.1.0';
-$plugin->version = 2025112600;
+$plugin->release = '1.0.0';
+$plugin->version = 2026022400;
 $plugin->requires = 2022112800;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_STABLE;

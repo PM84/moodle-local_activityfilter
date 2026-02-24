@@ -39,6 +39,7 @@ $string['occurences:very_rare'] = 'sehr selten';
 $string['open_activityfilter'] = 'KI-Aktivitätensuche';
 $string['pluginname'] = 'Aktivitäten-Filter';
 $string['popularitycolumn'] = 'Häufigkeit';
+$string['privacy:null_reason'] = 'Plugin speichert keine Daten über Nutzer, schickt aber Daten an den KI-Provider';
 $string['promptdesc'] = 'Nach welcher Art von Aktivität suchen Sie?';
 $string['reasoncolumn'] = 'Begründung';
 $string['search'] = 'Suchen';

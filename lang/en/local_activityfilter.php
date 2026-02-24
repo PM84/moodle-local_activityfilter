@@ -39,6 +39,7 @@ $string['occurences:very_rare'] = 'very rare';
 $string['open_activityfilter'] = 'Open AI activity search';
 $string['pluginname'] = 'Activity Filter';
 $string['popularitycolumn'] = 'Usage';
+$string['privacy:null_reason'] = 'The plugin do not safe any user data, but sends data to the ai provider';
 $string['promptdesc'] = 'What kind of activity would you like to find?';
 $string['reasoncolumn'] = 'Reason';
 $string['search'] = 'Search';

@@ -70,6 +70,12 @@ class overwritten_content_item_description {
         return false;
     }
 
+    /**
+     * Cleans the help button away from the description
+     *
+     * @param string $help Help description
+     * @return string Help description text
+     */
     public static function clean_core_help(string $help): string {
         return preg_replace(
             '#<div class="helpdoclink">.*?</div>#si',

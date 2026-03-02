@@ -152,7 +152,6 @@ export async function init() {
     newContentDropdowns.forEach(newContentDropdown => {
         const icon = document.createElement('i');
         icon.classList.add('icon', 'fa', 'fa-search');
-        icon.aria_hidden = true;
 
         const text = document.createTextNode(openButtonText);
 

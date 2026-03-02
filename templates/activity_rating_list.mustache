@@ -1,3 +1,55 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_activityfilter/template_name
+
+    List of content item rankings.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * activityresponses -> Rankings for all fitting plugins
+
+    Example context (json):
+    {
+        "activityresponses": [
+            {
+                "id": 5,
+                "activityicon": "HTML_PLUGIN_ICON",
+                "pluginname": "Big Blue Button",
+                "stars": {
+                    "fa-star",
+                    "fa-star",
+                    "fa-star-half-full",
+                    "fa-star-o",
+                    "fa-star-o"
+                },
+                "occurences": "often",
+                "reason": "Can help to connect better to students",
+                "hint": "Enable group rooms"
+            }
+        ]
+    }
+}}
+
 <style>
     .open-rating {
         display: flex;

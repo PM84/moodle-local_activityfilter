@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="local_activityfilter">
+    <description>PHPCS rules for local_activityfilter</description>
+
+    <!-- Exclude directories -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+</ruleset>

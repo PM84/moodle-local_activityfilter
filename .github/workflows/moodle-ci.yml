@@ -63,6 +63,7 @@ jobs:
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+          IGNORE_PATHS: 'vendor/'
           # Uncomment this to run Behat tests using the Moodle App.
           # MOODLE_APP: 'true'
 
@@ -78,8 +79,6 @@ jobs:
       - name: Moodle Code Checker
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpcs --exclude="moodle.Commenting.Package" --max-warnings 0
-        env:
-          IGNORE_PATHS: 'vendor/'
 
       - name: Validating
         if: ${{ !cancelled() }}

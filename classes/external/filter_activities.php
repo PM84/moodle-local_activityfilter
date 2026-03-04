@@ -36,17 +36,21 @@ class filter_activities extends external_api {
     /**
      * Convert a users request into a structured AI answer
      *
+     * @param int ID of the course
      * @param string $prompt users AI request
      * @return array
      * @throws invalid_parameter_exception
      */
-    public static function execute(string $prompt): array {
-        global $COURSE;
-        $ctx = context_course::instance($COURSE->id);
+    public static function execute(int $courseid, string $prompt): array {
+        $params = self::validate_parameters(self::execute_parameters(), [
+            'prompt' => $prompt,
+            'courseid' => $courseid,
+        ]);
+
+        $ctx = context_course::instance($params['courseid']);
         self::validate_context($ctx);
         require_capability('local/activityfilter:filter_activities', $ctx);
 
-        $params = self::validate_parameters(self::execute_parameters(), ['prompt' => $prompt]);
         $activitysearcher = di::get(i_activity_searcher::class);
         return $activitysearcher->filter_activities($params['prompt']);
     }
@@ -58,6 +62,7 @@ class filter_activities extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
+            'courseid' => new external_value(PARAM_INT),
             'prompt' => new external_value(PARAM_TEXT),
         ]);
     }

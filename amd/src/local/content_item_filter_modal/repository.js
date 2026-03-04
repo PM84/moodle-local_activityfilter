@@ -52,10 +52,12 @@ const failure = (error) => ({
  * @returns {Promise<{data: *, ok: boolean, error: *}>} List of ratings data in response
  */
 export async function fetchContentItemsRanking(prompt) {
+    const courseId = getCourseId();
+
     try {
         const result = await fetchMany([{
             methodname: 'local_activityfilter_filter_activities',
-            args: {prompt: prompt}
+            args: {courseid: courseId, prompt: prompt}
         }])[0];
         return success(result);
     } catch (error) {
@@ -69,10 +71,12 @@ export async function fetchContentItemsRanking(prompt) {
  * @returns {Promise<{data: *, ok: boolean, error: *}>} Response with max content item occurrence
  */
 export async function fetchMaxContentItemOccurrence() {
+    const courseId = getCourseId();
+
     try {
         const result = await fetchMany([{
             methodname: 'local_activityfilter_get_max_content_item_occurrence',
-            args: {}
+            args: {courseid: courseId}
         }])[0];
         return success(result);
     } catch (error) {
@@ -99,4 +103,24 @@ export async function renderContentItemRankingListOn(targetElement, templateData
         templateData
     );
     Templates.replaceNodeContents(targetElement, result.html, result.js);
+}
+
+/**
+ * Find course id from body tag
+ *
+ * @returns {number} course id
+ */
+function getCourseId() {
+    const classes = document.body.className.split(' ');
+
+    for (const cls of classes) {
+        if (cls.startsWith('course-')) {
+            const id = parseInt(cls.replace('course-', ''), 10);
+            if (!Number.isNaN(id)) {
+                return id;
+            }
+        }
+    }
+
+    throw new Error("Course ID not found");
 }

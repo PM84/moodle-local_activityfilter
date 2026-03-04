@@ -59,6 +59,7 @@ async function search(modalRoot) {
         <div class="alert alert-danger">
             ${errorText}
         </div>`;
+        return;
     }
 
     const rankingList = ContentItemRankingList.createFromRaw(response.data);

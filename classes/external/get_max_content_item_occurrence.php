@@ -16,12 +16,16 @@ class get_max_content_item_occurrence extends external_api {
     /**
      * Get most used content item occurrence count
      *
+     * @param int ID of the course
      * @return int most used content item occurrence count
      *             0 if no content item exists
      */
-    public static function execute(): int {
-        global $COURSE;
-        $ctx = context_course::instance($COURSE->id);
+    public static function execute(int $courseid): int {
+        $params = self::validate_parameters(self::execute_parameters(), [
+            'courseid' => $courseid,
+        ]);
+
+        $ctx = context_course::instance($params['courseid']);
         self::validate_context($ctx);
         require_capability('local/activityfilter:get_max_content_item_occurrence', $ctx);
 
@@ -44,7 +48,9 @@ class get_max_content_item_occurrence extends external_api {
      * @return external_function_parameters Function parameter structure
      */
     public static function execute_parameters(): external_function_parameters {
-        return new external_function_parameters([]);
+        return new external_function_parameters([
+            'courseid' => new external_value(PARAM_INT),
+        ]);
     }
 
     /**

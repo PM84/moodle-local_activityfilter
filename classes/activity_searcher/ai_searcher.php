@@ -31,6 +31,11 @@ use local_activityfilter\activity_searcher\contracts\i_activity_searcher;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class ai_searcher implements i_activity_searcher {
+    /** @var i_activity_summarizer Activity summarizer */
+    private readonly i_activity_summarizer $summerizer;
+    /** @var i_text_compressor Text compressor */
+    private readonly i_text_compressor $compressor;
+
     /**
      * Constructor.
      *
@@ -38,9 +43,11 @@ class ai_searcher implements i_activity_searcher {
      * @param i_text_compressor $compressor Text compressor
      */
     public function __construct(
-        private readonly i_activity_summarizer $summerizer,
-        private readonly i_text_compressor $compressor,
+        i_activity_summarizer $summerizer,
+        i_text_compressor $compressor,
     ) {
+        $this->summerizer = $summerizer;
+        $this->compressor = $compressor;
     }
 
     /**

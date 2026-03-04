@@ -26,6 +26,21 @@ use stdClass;
  * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity_ranking {
+    /** @var string Name of the mod plugin */
+    public readonly string $pluginname;
+    /** @var string Title of the plugin in the user language */
+    public readonly string $title;
+    /** @var string Reason why this plugin fits to the request */
+    public readonly string $reason;
+    /** @var string Way how to use this plugin, so it can fulfill the request */
+    public readonly string $hint;
+    /** @var int How often it's used in the moodle 0-10 */
+    public readonly int $occurrences;
+    /** @var int Ranking, how much it fits to the request 0-10 */
+    public readonly int $ranking;
+    /** @var string HTML of the component item logo */
+    public readonly string $logohtml;
+
     /**
      * Constructor
      *
@@ -38,14 +53,21 @@ class activity_ranking {
      * @param string $logohtml HTML of the component item logo
      */
     public function __construct(
-        public readonly string $pluginname,
-        public readonly string $title,
-        public readonly string $reason,
-        public readonly string $hint,
-        public readonly int $occurrences,
-        public readonly int $ranking,
-        public readonly string $logohtml
+        string $pluginname,
+        string $title,
+        string $reason,
+        string $hint,
+        int $occurrences,
+        int $ranking,
+        string $logohtml
     ) {
+        $this->pluginname = $pluginname;
+        $this->title = $title;
+        $this->reason = $reason;
+        $this->hint = $hint;
+        $this->occurrences = $occurrences;
+        $this->ranking = $ranking;
+        $this->logohtml = $logohtml;
     }
 
     /**

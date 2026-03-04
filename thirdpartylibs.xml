@@ -5,20 +5,13 @@
         <name>nlp-tools</name>
         <version>0.1.3</version>
         <license>WTFPL</license>
-        <licenseversion>No</licenseversion>
+        <licenseversion>2</licenseversion>
     </library>
     <library>
         <location>vendor/voku/stop-words</location>
         <name>stop-words</name>
         <version>2.0.1</version>
         <license>MIT</license>
-        <licenseversion>No</licenseversion>
-    </library>
-    <library>
-        <location>vendor/composer</location>
-        <name>composer auto require</name>
-        <version>No</version>
-        <license>No</license>
         <licenseversion>No</licenseversion>
     </library>
 </libraries>

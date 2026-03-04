@@ -16,6 +16,7 @@
 
 namespace local_activityfilter\local;
 
+use context_system;
 use core\hook\output\before_html_attributes;
 use core\hook\di_configuration;
 use core_ai\aiactions\generate_text;
@@ -94,6 +95,20 @@ class hook_callbacks {
         }
 
         global $PAGE;
+        if (
+            !has_all_capabilities([
+                'local/activityfilter:filter_activities',
+                'local/activityfilter:get_max_content_item_occurrence',
+            ], $PAGE->context)
+        ) {
+            return;
+        }
+
+        global $PAGE;
+        $PAGE->requires->js_call_amd(
+            'local_activityfilter/auto_resize_text_field',
+            'init'
+        );
         $PAGE->requires->js_call_amd(
             'local_activityfilter/content_item_filter_modal',
             'init'

@@ -56,13 +56,8 @@ function makeAllResizeable() {
  * Initialize the auto resize watcher
  */
 export function init() {
-    // Protects the script from being executed multiple times.
-    if (!window.__autoResizeObserver) {
-        return;
-    }
-
-    window.__autoResizeObserver = new MutationObserver(makeAllResizeable);
-    window.__autoResizeObserver.observe(
+    const autoResizeObserver = new MutationObserver(makeAllResizeable);
+    autoResizeObserver.observe(
         document.body,
         {
             childList: true,

@@ -14,4 +14,11 @@
         <license>MIT</license>
         <licenseversion>No</licenseversion>
     </library>
+    <library>
+        <location>vendor/composer</location>
+        <name>composer auto require</name>
+        <version>No</version>
+        <license>No</license>
+        <licenseversion>No</licenseversion>
+    </library>
 </libraries>

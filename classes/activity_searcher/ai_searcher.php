@@ -164,7 +164,7 @@ class ai_searcher implements i_activity_searcher {
                 continue;
             }
 
-            $rankingdata['occurences'] = $activity->get_usage_amount();
+            $rankingdata['occurrences'] = $activity->get_usage_amount();
             $rankingdata['logohtml'] = $activity->get_logo_html();
             $rankingdata['title'] = $activity->get_title();
             $data[] = activity_ranking::from_stdclass((object)$rankingdata);

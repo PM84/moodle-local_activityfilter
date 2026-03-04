@@ -16,10 +16,10 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 .open-rating {
-    display: flex;
+    display: flex !important;
     align-items: center;
     width: 100%;
-    text-decoration: none;
+    text-decoration: none !important;
     justify-content: space-between;
 }
 

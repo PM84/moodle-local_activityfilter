@@ -68,7 +68,7 @@ class filter_activities extends external_api {
                     'title' => new external_value(PARAM_TEXT),
                     'logohtml' => new external_value(PARAM_RAW),
                     'ranking' => new external_value(PARAM_INT),
-                    'occurences' => new external_value(PARAM_INT),
+                    'occurrences' => new external_value(PARAM_INT),
                     'hint' => new external_value(PARAM_TEXT),
                     'reason' => new external_value(PARAM_TEXT),
             ]),

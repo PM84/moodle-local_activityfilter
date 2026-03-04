@@ -42,7 +42,7 @@ class activity_ranking {
         public readonly string $title,
         public readonly string $reason,
         public readonly string $hint,
-        public readonly int $occurences,
+        public readonly int $occurrences,
         public readonly int $ranking,
         public readonly string $logohtml
     ) {
@@ -60,7 +60,7 @@ class activity_ranking {
             $obj->title ?? "",
             $obj->reason ?? "",
             $obj->hint ?? "",
-            $obj->occurences ?? 0,
+            $obj->occurrences ?? 0,
             $obj->ranking ?? 0,
             $obj->logohtml ?? ""
         );

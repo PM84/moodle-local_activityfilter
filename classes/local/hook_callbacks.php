@@ -86,13 +86,16 @@ class hook_callbacks {
      * @return void
      */
     public static function before_html_attributes(before_html_attributes $hook): void {
-        if (!manager::is_action_available(generate_text::class)) {
+        if (
+            !manager::is_action_available(generate_text::class)
+            && !get_config('local_activityfilter', 'dummy_mode')
+        ) {
             return;
         }
 
         global $PAGE;
         $PAGE->requires->js_call_amd(
-            'local_activityfilter/showmodal',
+            'local_activityfilter/content_item_filter_modal',
             'init'
         );
     }

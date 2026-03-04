@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_activityfilter/template_name
+    @template local_activityfilter/content_item_rating_list
 
     List of content item rankings.
 
@@ -42,7 +42,7 @@
                     "fa-star-o",
                     "fa-star-o"
                 ],
-                "occurences": "often",
+                "occurrences": "often",
                 "reason": "Can help to connect better to students",
                 "hint": "Enable group rooms"
             }
@@ -52,6 +52,6 @@
 
 <section class="accordion" id="activity-rating">
     {{#activityresponses}}
-        {{> local_activityfilter/activity_rating_box}}
+        {{> local_activityfilter/content_item_rating_box}}
     {{/activityresponses}}
 </section>

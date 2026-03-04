@@ -23,7 +23,7 @@
  */
 
 use local_activityfilter\external\filter_activities;
-use local_activityfilter\external\prepare_results;
+use local_activityfilter\external\get_max_content_item_occurrence;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,9 +34,9 @@ $functions = [
         'type' => 'read',
         'ajax' => true,
     ],
-    'local_activityfilter_prepare_results' => [
-        'classname' => prepare_results::class,
-        'description' => 'Prepare results by given json-object-array',
+    'local_activityfilter_get_max_content_item_occurrence' => [
+        'classname' => get_max_content_item_occurrence::class,
+        'description' => 'Get most used content item occurrence count',
         'type' => 'read',
         'ajax' => true,
     ],

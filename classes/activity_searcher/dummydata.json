@@ -4,7 +4,7 @@
     "title": "Zuweisen",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 9,
-    "occurences": 132,
+    "occurrences": 132,
     "hint": "Allows teachers to assign tasks, collect student work (files & text), and provide feedback\/grades.",
     "reason": "Directly addresses task assignment, submission and grading - a core function for many learning scenarios."
   },
@@ -13,7 +13,7 @@
     "title": "BigBlueButton",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 8,
-    "occurences": 23,
+    "occurrences": 23,
     "hint": "Provides a web conferencing platform for live online classes, virtual office hours, and group collaboration.",
     "reason": "Supports real-time interaction and collaboration, crucial for many educational activities."
   },
@@ -22,7 +22,7 @@
     "title": "Forum",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 7,
-    "occurences": 64,
+    "occurrences": 64,
     "hint": "Enables text-based, real-time synchronous discussions among participants.",
     "reason": "Facilitates communication and discussion, especially useful for remote learning or group projects."
   },
@@ -31,7 +31,7 @@
     "title": "Abstimmung",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 6,
-    "occurences": 23,
+    "occurrences": 23,
     "hint": "Allows teachers to link to external URLs (websites, files) for various purposes.",
     "reason": "Useful for providing links to resources or activities outside the platform."
   },
@@ -40,7 +40,7 @@
     "title": "Gruppenarbeit",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 7,
-    "occurences": 13,
+    "occurrences": 13,
     "hint": "Facilitates collection, review, and peer assessment of student work.",
     "reason": "Supports collaborative learning and feedback processes."
   },
@@ -49,7 +49,7 @@
     "title": "Buch",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 5,
-    "occurences": 2,
+    "occurrences": 2,
     "hint": "Creates multi-page resources with chapters, subchapters, text & media for displaying information.",
     "reason": "Useful for presenting lengthy content in a structured and organized manner."
   },
@@ -58,7 +58,7 @@
     "title": "Wiki",
     "logohtml": "<i class='icon-search'></i>",
     "ranking": 5,
-    "occurences": 3,
+    "occurrences": 3,
     "hint": "Enables collaborative creation and editing of web pages.",
     "reason": "Suitable for group notes, shared documents, or collaborative projects."
   }

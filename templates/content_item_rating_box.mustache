@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_activityfilter/activity_rating_box
+    @template local_activityfilter/content_item_rating_box
 
     A ranking for an content item in a course.
 
@@ -30,7 +30,7 @@
     * activityicon -> Plugin icon as html
     * pluginname -> Human readable pluginname
     * stars -> List of fa icons
-    * occurences -> How often does the plugin is used in the moodle as text (often, rarely...)
+    * occurrences -> How often does the plugin is used in the moodle as text (often, rarely...)
     * reason -> Reason, why this plugin is the best for the use case
     * hint -> What settings need to be set or what does this plugin at all
 
@@ -46,7 +46,7 @@
             "fa-star-o",
             "fa-star-o"
         ],
-        "occurences": "often",
+        "occurrences": "often",
         "reason": "Can help to connect better to students",
         "hint": "Enable group rooms"
     }
@@ -73,7 +73,7 @@
     <div id="activity-rating-collapse-{{id}}" class="collapse" aria-labelledby="activity-rating-heading-{{id}}"
          data-parent="#activity-rating">
         <div class="card-body">
-            <p><strong>{{#str}}popularitycolumn, local_activityfilter{{/str}}. </strong> {{occurences}}</p>
+            <p><strong>{{#str}}popularitycolumn, local_activityfilter{{/str}}. </strong> {{occurrences}}</p>
             <p><strong>{{#str}}reasoncolumn, local_activityfilter{{/str}}.</strong> {{reason}}</p>
             <p><strong>{{#str}}hintcolumn, local_activityfilter{{/str}}.</strong> {{hint}}</p>
         </div>

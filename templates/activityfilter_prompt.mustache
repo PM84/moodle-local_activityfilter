@@ -33,49 +33,6 @@
     }
 }}
 
-<script>
-    /**
-     * Makes the text area auto resizeable
-     *
-     * @param textarea Text area to make resizeable
-     */
-    function initAutoResize(textarea) {
-        if (!textarea || textarea.dataset.autoresizeInit === "1") {
-            return;
-        }
-
-        textarea.dataset.autoresizeInit = "1";
-
-        function autoResize() {
-            textarea.style.height = "auto";
-            textarea.style.height = textarea.scrollHeight + "px";
-        }
-
-        textarea.addEventListener('input', autoResize);
-    }
-
-    /**
-     * Makes all .prompt-search auto resizeable
-     */
-    function makeAllResizeable() {
-        const textareas = document.querySelectorAll('.prompt-search');
-        textareas.forEach(ta => {
-            initAutoResize(ta);
-        });
-    }
-
-    // Protects the script from being executed multiple times
-    if (!window.__autoResizeObserver) {
-        window.__autoResizeObserver = new MutationObserver(makeAllResizeable);
-        window.__autoResizeObserver.observe(
-                document.body, {
-                    childList: true,
-                    subtree: true
-                }
-        );
-    }
-</script>
-
 <form id="ai_activity_filter_prompt_form">
     <div class="card prompt-card">
         <div class="card-body">

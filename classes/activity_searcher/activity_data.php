@@ -36,6 +36,8 @@ class activity_data implements JsonSerializable {
     private readonly moodle_database $db;
     /** @var i_text_compressor Text Compressor */
     private readonly i_text_compressor $compressor;
+    /** @var content_item Content item of moodle */
+    private readonly content_item $contentitem;
 
     /**
      * Constructor.
@@ -43,10 +45,11 @@ class activity_data implements JsonSerializable {
      * @param content_item $contentitem Content item
      */
     public function __construct(
-        private content_item $contentitem,
+        content_item $contentitem,
     ) {
         $this->db = di::get(moodle_database::class);
         $this->compressor = di::get(i_text_compressor::class);
+        $this->contentitem = $contentitem;
     }
 
     /**
@@ -104,7 +107,6 @@ class activity_data implements JsonSerializable {
     /**
      * Gets the total usage amount of the given plugin
      *
-     * @param string $activityname Activity name of the plugin
      * @return int Total usage amount in moodle
      * @throws dml_exception
      */

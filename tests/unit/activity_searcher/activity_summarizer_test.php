@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_activityfilter\test\unit;
+namespace local_activityfilter;
 
 use advanced_testcase;
 use core_course\local\entity\content_item;
@@ -22,6 +22,7 @@ use local_activityfilter\activity_searcher\activity_data;
 use local_activityfilter\activity_searcher\content_item_manager;
 use local_activityfilter\activity_searcher\activity_summarizer;
 
+defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/content_item_generator.php');
 
 /**

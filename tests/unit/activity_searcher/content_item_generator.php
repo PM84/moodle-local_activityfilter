@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_activityfilter\test\unit;
+namespace local_activityfilter;
 
 use core_course\local\entity\content_item;
 use core_course\local\entity\string_title;

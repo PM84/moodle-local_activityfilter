@@ -36,7 +36,7 @@ class filter_activities extends external_api {
     /**
      * Convert a users request into a structured AI answer
      *
-     * @param int ID of the course
+     * @param int $courseid ID of the course
      * @param string $prompt users AI request
      * @return array
      * @throws invalid_parameter_exception

@@ -33,7 +33,7 @@ class activity_ranking {
      * @param string $title Title of the plugin in the user language
      * @param string $reason Reason why this plugin fits to the request
      * @param string $hint Way how to use this plugin, so it can fulfill the request
-     * @param int $popularity How often it's used in the moodle 0-10
+     * @param int $occurrences How often it's used in the moodle 0-10
      * @param int $ranking Ranking, how much it fits to the request 0-10
      * @param string $logohtml HTML of the component item logo
      */

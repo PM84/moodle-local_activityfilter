@@ -43,18 +43,6 @@ class content_item_manager {
     }
 
     /**
-     * Returns an array of all content items for a user in a course
-     *
-     * @return content_item[] Array of all enabled activities
-     */
-    public function get_enabled_activity_names(int $courseid, int $userid): array|null {
-        global $DB;
-        $user = $DB->get_record('user', ['id' => $userid], strictness: MUST_EXIST);
-        $course = get_course($courseid);
-        return $this->repository->find_all_for_course($user, $course);
-    }
-
-    /**
      * Returns an array of all content items
      *
      * @return content_item[] Array of all enabled activities

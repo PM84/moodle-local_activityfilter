@@ -32,14 +32,18 @@ use RuntimeException;
  * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity_summarizer implements i_activity_summarizer {
+    /** @var content_item_manager Activity plugin manager */
+    private readonly content_item_manager $activityplugins;
+
     /**
      * Constructor.
      *
      * @param content_item_manager $activityplugins Activity plugin manager
      */
     public function __construct(
-        private readonly content_item_manager $activityplugins,
+        content_item_manager $activityplugins,
     ) {
+        $this->activityplugins = $activityplugins;
     }
 
     /**

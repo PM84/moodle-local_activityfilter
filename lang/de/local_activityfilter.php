@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['activityfilter:filter_activities'] = 'Darf Inhaltstypen mithilfe von KI durchsuchen';
+$string['activityfilter:get_max_content_item_occurrence'] = 'Kann die Verwendungszahl des meistgenutzten Inhaltstypen abrufen';
+
 $string['error:ai_call'] = 'Die KI-Anfrage ist fehlgeschlagen. Bitte versuche es später erneut.';
 
 $string['hintcolumn'] = 'Beschreibung';

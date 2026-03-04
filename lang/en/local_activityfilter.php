@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['activityfilter:filter_activities'] = 'Can filter content items with AI for the most useful for a use case';
+$string['activityfilter:get_max_content_item_occurrence'] = 'Can fetch the occurrences (count) of most used content items';
+
 $string['error:ai_call'] = 'The AI request failed. Please try again later.';
 
 $string['hintcolumn'] = 'Description';

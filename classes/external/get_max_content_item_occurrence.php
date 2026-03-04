@@ -2,6 +2,7 @@
 
 namespace local_activityfilter\external;
 
+use context_course;
 use core\di;
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -19,6 +20,11 @@ class get_max_content_item_occurrence extends external_api {
      *             0 if no content item exists
      */
     public static function execute(): int {
+        global $COURSE;
+        $ctx = context_course::instance($COURSE->id);
+        self::validate_context($ctx);
+        require_capability('local/activityfilter:get_max_content_item_occurrence', $ctx);
+
         $db = di::get(moodle_database::class);
         $record = $db->get_record_sql(
             'SELECT COUNT(*) AS count

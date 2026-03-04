@@ -67,7 +67,6 @@ export default class ContentItemRankingList {
         let rankings = [];
 
         for (const rawRanking of rawRankings) {
-            window.console.log(rawRanking);
             rankings.push(new ContentItemRanking(
                 id,
                 rawRanking.pluginname,

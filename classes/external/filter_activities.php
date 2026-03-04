@@ -16,6 +16,7 @@
 
 namespace local_activityfilter\external;
 
+use context_course;
 use core\di;
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -40,6 +41,11 @@ class filter_activities extends external_api {
      * @throws invalid_parameter_exception
      */
     public static function execute(string $prompt): array {
+        global $COURSE;
+        $ctx = context_course::instance($COURSE->id);
+        self::validate_context($ctx);
+        require_capability('local/activityfilter:filter_activities', $ctx);
+
         $params = self::validate_parameters(self::execute_parameters(), ['prompt' => $prompt]);
         $activitysearcher = di::get(i_activity_searcher::class);
         return $activitysearcher->filter_activities($params['prompt']);

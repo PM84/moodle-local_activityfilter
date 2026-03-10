@@ -31,10 +31,11 @@ class ai_dummy_searcher implements i_activity_searcher {
      * Return dummy reply
      *
      * @param string $request Ignored request
+     * @param int $contextid Ignored context ID.
      * @return contracts\activity_ranking[] Stale dummy reply for activity search
      * @throws Exception
      */
-    public function filter_activities(string $request): array {
+    public function filter_activities(string $request, int $contextid = 0): array {
         $response = file_get_contents(__DIR__ . '/dummydata.json');
         $decoded = json_decode($response, true);
         if ($decoded === null) {

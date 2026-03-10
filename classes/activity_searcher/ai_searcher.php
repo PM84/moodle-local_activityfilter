@@ -18,7 +18,6 @@ namespace local_activityfilter\activity_searcher;
 
 use context_system;
 use core_ai\aiactions\generate_text;
-use core_ai\manager;
 use dml_exception;
 use Exception;
 use local_activityfilter\activity_searcher\contracts\activity_ranking;
@@ -51,18 +50,19 @@ class ai_searcher implements i_activity_searcher {
     }
 
     /**
-     * Searches for activities fitting to the given user request
-     * It will return an array of activity rankings
+     * Searches for activities fitting to the given user request.
+     * It will return an array of activity rankings.
      *
-     * @param string $request User request
-     * @return activity_ranking[] List of activity rankings
+     * @param string $request User request.
+     * @param int $contextid The context ID for the AI request.
+     * @return activity_ranking[] List of activity rankings.
      * @throws dml_exception
      * @throws invalid_ai_response
      */
-    public function filter_activities(string $request): array {
+    public function filter_activities(string $request, int $contextid = 0): array {
         $activitysummary = $this->summerizer->get_activity_data();
-        $prompt = self::prepare_prompt($request, $activitysummary);
-        $response = self::send_request($prompt);
+        $prompttext = $this->build_prompt_text($request, $activitysummary);
+        $response = $this->send_request($prompttext, $contextid);
 
         $json = $this->convert_ai_response_to_json($response);
         if ($json === false) {
@@ -78,48 +78,89 @@ class ai_searcher implements i_activity_searcher {
     }
 
     /**
-     * Prepares the complete AI Request
+     * Builds the prompt text from user request and activity data.
      *
-     * @param string $userrequest User request
-     * @param activity_data[] $activitydata List of activity data
-     * @return generate_text Generate text task
+     * @param string $userrequest User request.
+     * @param activity_data[] $activitydata List of activity data.
+     * @return string The prompt text.
      * @throws dml_exception
      */
-    public function prepare_prompt(string $userrequest, array $activitydata): generate_text {
-        global $USER;
+    public function build_prompt_text(string $userrequest, array $activitydata): string {
         $plugindescription = json_encode($activitydata, JSON_UNESCAPED_UNICODE);
         $plugindescription = preg_replace('/<[^>]*>/', '', $plugindescription);
         $plugindescription = str_replace("\/innen", "", $plugindescription);
         $plugindescription = str_replace("\/", "/", $plugindescription);
         $plugindescription = str_replace('},{', "\n", $plugindescription);
 
-        $promptmsg = (
-            get_config('local_activityfilter', 'systemprompt') .
+        return get_config('local_activityfilter', 'systemprompt') .
             'Plugin descriptions ' . $plugindescription . "\n" .
-            'User request: ' . $this->compressor->compress($userrequest)
-        );
-
-        return new generate_text(
-            context_system::instance()->id,
-            $USER->id,
-            $promptmsg
-        );
+            'User request: ' . $this->compressor->compress($userrequest);
     }
 
     /**
-     * Sends the request to the AI Manager
+     * Sends the request to the configured AI backend.
      *
-     * @param generate_text $prompts Generate text request
-     * @return string AI Response
+     * @param string $prompttext The prompt text.
+     * @param int $contextid The context ID for the AI request.
+     * @return string AI Response.
      * @throws Exception
      */
-    public function send_request(generate_text $prompts): string {
-        $response = (new manager())->process_action($prompts);
+    public function send_request(string $prompttext, int $contextid = 0): string {
+        if ($contextid === 0) {
+            $contextid = context_system::instance()->id;
+        }
+        $backend = get_config('local_activityfilter', 'backend');
+        if ($backend === 'local_ai_manager') {
+            return $this->send_request_local_ai_manager($prompttext, $contextid);
+        }
+        return $this->send_request_core_ai($prompttext, $contextid);
+    }
+
+    /**
+     * Sends the request via core_ai subsystem.
+     *
+     * @param string $prompttext The prompt text.
+     * @param int $contextid The context ID.
+     * @return string AI Response.
+     * @throws Exception
+     */
+    private function send_request_core_ai(string $prompttext, int $contextid): string {
+        global $USER;
+        $action = new generate_text(
+            $contextid,
+            $USER->id,
+            $prompttext
+        );
+        $manager = \core\di::get(\core_ai\manager::class);
+        $response = $manager->process_action($action);
         if (!$response->get_success()) {
             throw new Exception($response->get_errormessage());
         }
-
         return $response->get_response_data()['generatedcontent'];
+    }
+
+    /**
+     * Sends the request via local_ai_manager.
+     *
+     * @param string $prompttext The prompt text.
+     * @param int $contextid The context ID.
+     * @return string AI Response.
+     * @throws \moodle_exception
+     */
+    private function send_request_local_ai_manager(string $prompttext, int $contextid): string {
+        $manager = new \local_ai_manager\manager('singleprompt');
+        $response = $manager->perform_request($prompttext, 'local_activityfilter', $contextid);
+        if ($response->get_code() !== 200) {
+            throw new \moodle_exception(
+                'error:ai_call',
+                'local_activityfilter',
+                '',
+                $response->get_errormessage(),
+                $response->get_debuginfo()
+            );
+        }
+        // The ai_manager may wrap content in HTML tags (e.g. <p>...</p>), strip them for raw JSON.
+        return trim(strip_tags($response->get_content()));
     }
 
     /**

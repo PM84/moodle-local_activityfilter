@@ -63,6 +63,20 @@ Output format: A JSON array (string) where each object contains (dont give any c
     )
 );
 
+$backends = [
+    'core_ai_subsystem' => get_string('settings:backend_coreai', 'local_activityfilter'),
+    'local_ai_manager' => get_string('settings:backend_localaimanager', 'local_activityfilter'),
+];
+$settings->add(
+    new admin_setting_configselect(
+        'local_activityfilter/backend',
+        get_string('settings:backend', 'local_activityfilter'),
+        get_string('settings:backend_desc', 'local_activityfilter'),
+        'core_ai_subsystem',
+        $backends
+    )
+);
+
 $settings->add(
     new admin_setting_configcheckbox(
         'local_activityfilter/dummy_mode',

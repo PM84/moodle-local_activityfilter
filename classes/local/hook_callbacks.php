@@ -19,8 +19,6 @@ namespace local_activityfilter\local;
 use context_system;
 use core\hook\output\before_html_attributes;
 use core\hook\di_configuration;
-use core_ai\aiactions\generate_text;
-use core_ai\manager;
 use core_plugin_manager;
 use local_activityfilter\activity_searcher\ai_dummy_searcher;
 use local_activityfilter\activity_searcher\content_item_manager;
@@ -81,16 +79,37 @@ class hook_callbacks {
     }
 
     /**
-     * Injects JS to add activity filter to course section menu
+     * Checks if the AI backend is available based on the configured backend setting.
      *
-     * @param before_html_attributes $hook After config hook
+     * @return bool True if the configured backend is available.
+     */
+    private static function is_ai_available(): bool {
+        if (get_config('local_activityfilter', 'dummy_mode')) {
+            return true;
+        }
+
+        $backend = get_config('local_activityfilter', 'backend');
+        if ($backend === 'local_ai_manager') {
+            if (!class_exists('\local_ai_manager\local\tenant')) {
+                return false;
+            }
+            $tenant = \core\di::get(\local_ai_manager\local\tenant::class);
+            return $tenant->is_tenant_allowed();
+        }
+
+        // Default: core_ai_subsystem.
+        $manager = \core\di::get(\core_ai\manager::class);
+        return $manager->is_action_available(\core_ai\aiactions\generate_text::class);
+    }
+
+    /**
+     * Injects JS to add activity filter to course section menu.
+     *
+     * @param before_html_attributes $hook After config hook.
      * @return void
      */
     public static function before_html_attributes(before_html_attributes $hook): void {
-        if (
-            !manager::is_action_available(generate_text::class)
-            && !get_config('local_activityfilter', 'dummy_mode')
-        ) {
+        if (!self::is_ai_available()) {
             return;
         }
 
@@ -104,7 +123,6 @@ class hook_callbacks {
             return;
         }
 
-        global $PAGE;
         $PAGE->requires->js_call_amd(
             'local_activityfilter/auto_resize_text_field',
             'init'
@@ -112,6 +130,23 @@ class hook_callbacks {
         $PAGE->requires->js_call_amd(
             'local_activityfilter/content_item_filter_modal',
             'init'
+        );
+    }
+
+    /**
+     * Provide additional information about which purposes are being used by this plugin.
+     *
+     * @param \local_ai_manager\hook\purpose_usage $hook The purpose_usage hook object.
+     */
+    public static function handle_purpose_usage(\local_ai_manager\hook\purpose_usage $hook): void {
+        $hook->set_component_displayname(
+            'local_activityfilter',
+            get_string('pluginname', 'local_activityfilter')
+        );
+        $hook->add_purpose_usage_description(
+            'singleprompt',
+            'local_activityfilter',
+            get_string('purposeplacedescription_singleprompt', 'local_activityfilter')
         );
     }
 }

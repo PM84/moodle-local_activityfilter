@@ -102,11 +102,23 @@ async function openActivityFilter() {
         return;
     }
 
-    searchButton.addEventListener('click', async() => {
+    const doSearch = async() => {
         setLoading(searchButton, true);
         await search(modalRoot);
         setLoading(searchButton, false);
-    });
+    };
+
+    searchButton.addEventListener('click', doSearch);
+
+    const searchPrompt = modalRoot.querySelector(Selectors.searchPrompt);
+    if (searchPrompt) {
+        searchPrompt.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                doSearch();
+            }
+        });
+    }
 }
 
 /**
